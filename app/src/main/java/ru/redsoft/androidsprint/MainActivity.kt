@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import ru.redsoft.androidsprint.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -32,13 +33,15 @@ class MainActivity : AppCompatActivity() {
 
         binding.categoryButton.setOnClickListener{
             supportFragmentManager.commit {
-                replace(R.id.fragmentContainerView, CategoriesListFragment::class.java, null, null)
+                setReorderingAllowed(true)
+                replace<CategoriesListFragment>(R.id.fragmentContainerView)
             }
         }
 
         binding.favoriteButton.setOnClickListener{
             supportFragmentManager.commit {
-                replace(R.id.fragmentContainerView, FavoritesFragment::class.java, null, null)
+                setReorderingAllowed(true)
+                replace<FavoritesFragment>(R.id.fragmentContainerView)
             }
         }
     }
