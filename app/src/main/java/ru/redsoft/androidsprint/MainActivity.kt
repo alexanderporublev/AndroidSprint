@@ -30,5 +30,17 @@ class MainActivity : AppCompatActivity() {
             .setReorderingAllowed(true)
             .add<CategoriesListFragment>(R.id.fragment_container_view)
             .commit()
+
+        binding.categoryButton.setOnClickListener{
+            supportFragmentManager.commit {
+                replace(R.id.fragment_container_view, CategoriesListFragment::class.java, null, null)
+            }
+        }
+
+        binding.favoriteButton.setOnClickListener{
+            supportFragmentManager.commit {
+                replace(R.id.fragment_container_view, FavoritesFragment::class.java, null, null)
+            }
+        }
     }
 }
