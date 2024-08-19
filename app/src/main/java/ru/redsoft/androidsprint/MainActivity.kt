@@ -1,7 +1,6 @@
 package ru.redsoft.androidsprint
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -25,12 +24,22 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             addToBackStack(null)
             add<CategoriesListFragment>(R.id.fragmentContainerView)
         }
-    }
 
+        binding.categoryButton.setOnClickListener{
+            supportFragmentManager.commit {
+                replace(R.id.fragmentContainerView, CategoriesListFragment::class.java, null, null)
+            }
+        }
+
+        binding.favoriteButton.setOnClickListener{
+            supportFragmentManager.commit {
+                replace(R.id.fragmentContainerView, FavoritesFragment::class.java, null, null)
+            }
+        }
+    }
 }
