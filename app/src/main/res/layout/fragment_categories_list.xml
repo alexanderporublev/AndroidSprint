@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CategoriesListFragment"
-    android:background="@color/dark_blue">
+    android:background="@color/background_color">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="@string/fragment_container_view" />
+        android:text="FragmentContainerView" />
 
 </FrameLayout>

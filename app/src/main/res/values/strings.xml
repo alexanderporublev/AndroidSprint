@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">AndroidSprint</string>
-    <string name="category">категории</string>
-    <string name="favorite">избранное</string>
-    <string name="fragment_container_view">FragmentContainerView</string>
+    <string name="app_name" translatable="false">RecipeApp</string>
+    <string name="title_categories">категории</string>
+    <string name="title_favorites">избранное</string>
 </resources>
