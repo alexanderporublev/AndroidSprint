@@ -24,10 +24,4 @@ class CategoriesListFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_categories_list, container, false)
     }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CategoriesListFragment()
-    }
 }
