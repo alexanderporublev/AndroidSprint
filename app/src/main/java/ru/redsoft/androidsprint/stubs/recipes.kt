@@ -3,7 +3,7 @@ package ru.redsoft.androidsprint.stubs
 import ru.redsoft.androidsprint.models.Category
 
 object STUB {
-    val categories = listOf(
+    private val categories = listOf(
         Category(
             id = 0,
             title = "Бургеры",
