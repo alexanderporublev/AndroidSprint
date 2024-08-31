@@ -1,7 +1,6 @@
 package ru.redsoft.androidsprint
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import ru.redsoft.androidsprint.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -25,12 +25,24 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             addToBackStack(null)
             add<CategoriesListFragment>(R.id.fragmentContainerView)
         }
-    }
 
+        binding.categoryButton.setOnClickListener{
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                replace<CategoriesListFragment>(R.id.fragmentContainerView)
+            }
+        }
+
+        binding.favoriteButton.setOnClickListener{
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                replace<FavoritesFragment>(R.id.fragmentContainerView)
+            }
+        }
+    }
 }
