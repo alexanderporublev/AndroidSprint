@@ -12,7 +12,6 @@
         android:id="@+id/fragmentContainerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/margin"
         app:layout_constraintBottom_toTopOf="@+id/navBarLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +32,6 @@
             android:layout_marginEnd="@dimen/half_main_spacing"
             android:layout_weight="1"
             android:backgroundTint="@color/categories_button_background"
-            android:fontFamily="@font/montserrat_alternates_medium"
             android:text="@string/title_categories" />
 
         <com.google.android.material.button.MaterialButton
@@ -44,7 +42,6 @@
             android:layout_marginStart="@dimen/half_main_spacing"
             android:layout_weight="1"
             android:backgroundTint="@color/favorite_button_background"
-            android:fontFamily="@font/montserrat_alternates_medium"
             android:text="@string/title_favorites"
             app:icon="@drawable/ic_favorite_normal"
             app:iconGravity="textEnd" />
