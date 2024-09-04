@@ -5,5 +5,6 @@
     <color name="categories_button_background">#525DC0</color>
     <color name="favorite_button_background">#E13E3E</color>
     <color name="background_color">#F4FAFF</color>
-
+    <color name="purple_text">#5F3678</color>
+    <color name="gray_text">#666666</color>
 </resources>
