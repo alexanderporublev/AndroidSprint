@@ -17,23 +17,23 @@
         <ImageView
             android:id="@+id/header_image"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="@dimen/card_height"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/bcg_categories" />
+            tools:src="@drawable/bcg_categories"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/title"
             style="@style/StyleTitle16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/margin"
+            android:paddingHorizontal="@dimen/margin"
             android:paddingTop="@dimen/margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header_image"
-            tools:ignore="RtlSymmetry"
             tools:text="Бургеры" />
 
 
@@ -42,9 +42,8 @@
             style="@style/StyleBody12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/margin"
-            android:paddingTop="@dimen/margin"
-            android:paddingBottom="@dimen/margin"
+            android:paddingHorizontal="@dimen/margin"
+            android:paddingVertical="@dimen/margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
             tools:text="Рецепты всех популярных видов бургеров" />
