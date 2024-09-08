@@ -3,4 +3,14 @@
     <dimen name="main_spacing">4dp</dimen>
     <dimen name="half_main_spacing">2dp</dimen>
     <dimen name="margin">16dp</dimen>
+    <dimen name="half_margin">8dp</dimen>
+    <dimen name="padding">10dp</dimen>
+    <dimen name="double_padding">20dp</dimen>
+    <dimen name="corner_radius">8dp</dimen>
+    <dimen name="text_12">12sp</dimen>
+    <dimen name="text_14">14sp</dimen>
+    <dimen name="text_16">16sp</dimen>
+    <dimen name="text_20">20sp</dimen>
+    <dimen name="card_height">130dp</dimen>
+    <dimen name="header_image_height">224dp</dimen>
 </resources>
