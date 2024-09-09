@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.redsoft.androidsprint.databinding.FragmentCategoriesListBinding
 import ru.redsoft.androidsprint.stubs.STUB
 
+const val ARG_CATEGORY_ID = "categoryId"
+const val ARG_CATEGORY_NAME = "categoryName"
+const val ARG_CATEGORY_IMAGE_URL = "categoryImageUrl"
 
 class CategoriesListFragment : Fragment() {
 
@@ -40,9 +44,17 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun openRecipesByCategoryId(id: Int) {
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipesListFragment>(R.id.fragmentContainerView)
+
+        STUB.getCategories().find { it.id == id }?.let {
+            parentFragmentManager.commit {
+                val bundle = bundleOf(
+                    ARG_CATEGORY_ID to it.id,
+                    ARG_CATEGORY_NAME to it.title,
+                            ARG_CATEGORY_IMAGE_URL to it.imageUrl
+                )
+                setReorderingAllowed(true)
+                replace<RecipesListFragment>(R.id.fragmentContainerView, args = bundle)
+            }
         }
     }
 }
