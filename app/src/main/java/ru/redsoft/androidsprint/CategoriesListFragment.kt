@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +39,17 @@ class CategoriesListFragment : Fragment() {
     }
 
     fun initRecycler() {
-        binding.rvCategories.adapter = CategoriesListAdapter(STUB.getCategories())
+        val adapter = CategoriesListAdapter(STUB.getCategories())
+        adapter.onItemClickCallback = {
+            openRecipesByCategoryId(it.id)
+        }
+        binding.rvCategories.adapter = adapter
+    }
+
+    private fun openRecipesByCategoryId(id: Int) {
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<RecipesListFragment>(R.id.fragmentContainerView)
+        }
     }
 }
