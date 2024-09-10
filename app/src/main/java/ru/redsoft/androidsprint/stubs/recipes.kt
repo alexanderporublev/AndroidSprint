@@ -25,7 +25,7 @@ object STUB {
         Category(
             id = 3,
             title = "Рыба",
-            description = "Печеная",
+            description = "Печеная, жареная, сушеная, любая рыба на твой вкус",
             imageUrl = "fish.png"
         ),
         Category(
