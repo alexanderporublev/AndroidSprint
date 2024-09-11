@@ -21,11 +21,6 @@ class CategoriesListFragment : Fragment() {
         FragmentCategoriesListBinding.inflate(layoutInflater)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,11 +34,9 @@ class CategoriesListFragment : Fragment() {
     }
 
     fun initRecycler() {
-        val adapter = CategoriesListAdapter(STUB.getCategories())
-        adapter.onItemClickCallback = {
-            openRecipesByCategoryId(it.id)
+        binding.rvCategories.adapter = CategoriesListAdapter(STUB.getCategories()).also { adapter ->
+            adapter.onItemClickCallback = { openRecipesByCategoryId(it.id) }
         }
-        binding.rvCategories.adapter = adapter
     }
 
     private fun openRecipesByCategoryId(id: Int) {
