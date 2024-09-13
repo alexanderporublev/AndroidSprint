@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,11 +19,6 @@ class CategoriesListFragment : Fragment() {
 
     private val binding: FragmentCategoriesListBinding by lazy {
         FragmentCategoriesListBinding.inflate(layoutInflater)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -37,6 +34,15 @@ class CategoriesListFragment : Fragment() {
     }
 
     fun initRecycler() {
-        binding.rvCategories.adapter = CategoriesListAdapter(STUB.getCategories())
+        binding.rvCategories.adapter = CategoriesListAdapter(STUB.getCategories()).also { adapter ->
+            adapter.onItemClickCallback = { openRecipesByCategoryId(it.id) }
+        }
+    }
+
+    private fun openRecipesByCategoryId(id: Int) {
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<RecipesListFragment>(R.id.fragmentContainerView)
+        }
     }
 }
