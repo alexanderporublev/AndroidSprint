@@ -20,9 +20,12 @@ class RecipesListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        categoryId = requireArguments().getInt(ARG_CATEGORY_ID)
-        categoryName = requireArguments().getString(ARG_CATEGORY_NAME)
-        categoryImageUrl = requireArguments().getString(ARG_CATEGORY_IMAGE_URL)
+        arguments?.let {
+            categoryId = it.getInt(CategoriesListFragment.ARG_CATEGORY_ID)
+            categoryName = it.getString(CategoriesListFragment.ARG_CATEGORY_NAME)
+            categoryImageUrl = it.getString(CategoriesListFragment.ARG_CATEGORY_IMAGE_URL)
+        }?:throw Exception("No arguments has been provided")
+
 
         Log.d("AndroidSprint", "Get bundle ${categoryId}:${categoryName}:${categoryImageUrl}")
     }

@@ -15,10 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.redsoft.androidsprint.databinding.FragmentCategoriesListBinding
 import ru.redsoft.androidsprint.stubs.STUB
 
-const val ARG_CATEGORY_ID = "categoryId"
-const val ARG_CATEGORY_NAME = "categoryName"
-const val ARG_CATEGORY_IMAGE_URL = "categoryImageUrl"
-
 class CategoriesListFragment : Fragment() {
 
     private val binding: FragmentCategoriesListBinding by lazy {
@@ -50,11 +46,17 @@ class CategoriesListFragment : Fragment() {
                 val bundle = bundleOf(
                     ARG_CATEGORY_ID to it.id,
                     ARG_CATEGORY_NAME to it.title,
-                            ARG_CATEGORY_IMAGE_URL to it.imageUrl
+                    ARG_CATEGORY_IMAGE_URL to it.imageUrl
                 )
                 setReorderingAllowed(true)
                 replace<RecipesListFragment>(R.id.fragmentContainerView, args = bundle)
             }
         }
+    }
+
+    companion object {
+        const val ARG_CATEGORY_ID = "categoryId"
+        const val ARG_CATEGORY_NAME = "categoryName"
+        const val ARG_CATEGORY_IMAGE_URL = "categoryImageUrl"
     }
 }
