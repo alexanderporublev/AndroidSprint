@@ -25,20 +25,22 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            addToBackStack(null)
-            add<CategoriesListFragment>(R.id.fragmentContainerView)
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                addToBackStack(null)
+                add<CategoriesListFragment>(R.id.fragmentContainerView)
+            }
         }
 
-        binding.categoryButton.setOnClickListener{
+        binding.categoryButton.setOnClickListener {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
                 replace<CategoriesListFragment>(R.id.fragmentContainerView)
             }
         }
 
-        binding.favoriteButton.setOnClickListener{
+        binding.favoriteButton.setOnClickListener {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
                 replace<FavoritesFragment>(R.id.fragmentContainerView)

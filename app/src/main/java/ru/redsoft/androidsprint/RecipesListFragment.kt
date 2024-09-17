@@ -17,12 +17,12 @@ class RecipesListFragment : Fragment() {
     private var categoryName: String? = null
     private var categoryImageUrl: String? = null
 
-    val binding: FragmentRecipesListBinding by lazy { FragmentRecipesListBinding.inflate(layoutInflater) }
+    private val binding: FragmentRecipesListBinding by lazy { FragmentRecipesListBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return binding.root
     }
 
@@ -37,6 +37,7 @@ class RecipesListFragment : Fragment() {
                 binding.root.context.getAssets().open(categoryImageUrl), null
             )
             binding.headerImageView.setImageDrawable(categoryImageDrawable)
+            binding.headerImageView.contentDescription = getString(R.string.category_recipes_image) + " " + categoryName
             }
         binding.categoryNameTextView.text = categoryName?:""
         initRecycler()

@@ -12,7 +12,7 @@ class RecipesListAdapter (private val recipesList: List<Recipe>) :
     var onItemClickCallback: ((Int) -> Unit)? = null
 
     class ViewHolder(val binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
-        val RecipeTitleView = binding.titleView
+        val recipeTitleView = binding.titleView
         val imageView = binding.headerImageView
     }
 
@@ -23,12 +23,13 @@ class RecipesListAdapter (private val recipesList: List<Recipe>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.RecipeTitleView.text = recipesList[position].title
-
+        viewHolder.recipeTitleView.text = recipesList[position].title
+        val context = viewHolder.binding.root.context
         val recipeImageDrawable = Drawable.createFromStream(
-            viewHolder.binding.root.context.getAssets().open(recipesList[position].imageUrl), null
+            context.getAssets().open(recipesList[position].imageUrl), null
         )
         viewHolder.imageView.setImageDrawable(recipeImageDrawable)
+        viewHolder.imageView.contentDescription = context.getString(R.string.recipe_image) + " " + recipesList[position].title
         viewHolder.binding.root.setOnClickListener{
             onItemClickCallback?.invoke(recipesList[position].id)
         }
