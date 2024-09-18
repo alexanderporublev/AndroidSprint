@@ -37,7 +37,7 @@ class RecipesListFragment : Fragment() {
                 binding.root.context.getAssets().open(categoryImageUrl), null
             )
             binding.headerImageView.setImageDrawable(categoryImageDrawable)
-            binding.headerImageView.contentDescription = getString(R.string.category_recipes_image) + " " + categoryName
+            binding.headerImageView.contentDescription = getString(R.string.category_recipes_image, categoryName)
             }
         binding.categoryNameTextView.text = categoryName?:""
         initRecycler()

@@ -29,7 +29,7 @@ class RecipesListAdapter (private val recipesList: List<Recipe>) :
             context.getAssets().open(recipesList[position].imageUrl), null
         )
         viewHolder.imageView.setImageDrawable(recipeImageDrawable)
-        viewHolder.imageView.contentDescription = context.getString(R.string.recipe_image) + " " + recipesList[position].title
+        viewHolder.imageView.contentDescription = context.getString(R.string.recipe_image, recipesList[position].title)
         viewHolder.binding.root.setOnClickListener{
             onItemClickCallback?.invoke(recipesList[position].id)
         }
