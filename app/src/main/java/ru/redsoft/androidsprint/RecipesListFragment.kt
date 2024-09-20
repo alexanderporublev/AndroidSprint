@@ -63,6 +63,6 @@ class RecipesListFragment : Fragment() {
     }
 
     companion object {
-        const val ARG_RECIPE = "recipe"
+        const val ARG_RECIPE = "arg_recipe"
     }
 }
