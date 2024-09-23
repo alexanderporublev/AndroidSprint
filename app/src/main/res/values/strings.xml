@@ -3,4 +3,7 @@
     <string name="title_categories">категории</string>
     <string name="title_favorites">избранное</string>
     <string name="category_image">Изображение категорий</string>
+    <string name="burgers">бургеры</string>
+    <string name="recipe_image">Изображение рецепта: %1s</string>
+    <string name="category_recipes_image">Изображение категории рецептов: %1s</string>
 </resources>
