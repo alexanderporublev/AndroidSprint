@@ -13,7 +13,7 @@ import ru.redsoft.androidsprint.models.Recipe
 class RecipeFragment : Fragment() {
 
     private var recipe: Recipe? = null
-    val binding: FragmentRecipeBinding by lazy {FragmentRecipeBinding.inflate(layoutInflater)}
+    val binding: FragmentRecipeBinding by lazy { FragmentRecipeBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,12 +25,12 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            recipe =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 it.getParcelable(RecipesListFragment.ARG_RECIPE, Recipe::class.java)
             } else {
                 it.getParcelable(RecipesListFragment.ARG_RECIPE)
             }
-        }?:throw Exception("No arguments has been provided")
+        } ?: throw IllegalArgumentException("No arguments has been provided")
         binding.recipeTitleView.text = recipe?.title
     }
 }

@@ -43,8 +43,7 @@
             style="@style/StyleBody12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/half_margin"
-            android:paddingVertical="@dimen/half_margin"
+            android:padding="@dimen/half_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleView"
             tools:text="Рецепты всех популярных видов бургеров" />
