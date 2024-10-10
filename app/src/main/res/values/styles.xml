@@ -1,29 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="StyleTitle14" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/white</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">@font/montserrat_alternates_semibold</item>
         <item name="android:textSize">@dimen/text_14</item>
     </style>
+
+    <style name="StyleTitle14Gray" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">@font/montserrat_alternates_light</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
     <style name="StyleNavButton" parent="Widget.Material3.Button">
         <item name="android:textAppearance">@style/StyleTitle14</item>
         <item name="android:paddingVertical">@dimen/padding</item>
         <item name="android:paddingHorizontal">@dimen/double_padding</item>
-        <item name="cornerRadius">@dimen/corner_radius</item>
+        <item name="cornerRadius">@dimen/half_margin</item>
     </style>
+
     <style name="StyleTitle20" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/purple_text</item>
         <item name="android:fontFamily">@font/montserrat_alternates_semibold</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">@dimen/text_20</item>
     </style>
+
+    <style name="StyleTitle24" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/purple_text</item>
+        <item name="android:fontFamily">@font/montserrat_alternates_semibold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/text_24</item>
+    </style>
+
     <style name="StyleTitle16" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/purple_text</item>
         <item name="android:fontFamily">@font/montserrat_alternates_semibold</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">@dimen/text_16</item>
     </style>
+
     <style name="StyleBody12" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/gray_text</item>
         <item name="android:fontFamily">@font/montserrat_alternates_light</item>
