@@ -1,5 +1,6 @@
 package ru.redsoft.androidsprint
 
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -31,6 +32,17 @@ class RecipeFragment : Fragment() {
                 it.getParcelable(RecipesListFragment.ARG_RECIPE)
             }
         } ?: throw IllegalArgumentException("No arguments has been provided")
-        binding.recipeTitleView.text = recipe?.title
+        initUI()
+    }
+
+    private fun initUI() = recipe?.also {
+        binding.recipeNameTextView.text = it.title
+        binding.headerImageView.setImageDrawable(
+            Drawable.createFromStream(
+                context?.getAssets()?.open(it.imageUrl), null
+            )
+        )
+        binding.rvIngredients.adapter = IngredientsAdapter(it.ingredients)
+        binding.rvMethod.adapter = MethodAdapter(it.method)
     }
 }
