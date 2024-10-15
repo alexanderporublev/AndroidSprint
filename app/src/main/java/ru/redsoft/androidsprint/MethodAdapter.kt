@@ -17,6 +17,6 @@ class MethodAdapter(val methodsList: List<String>): RecyclerView.Adapter<MethodA
     override fun getItemCount(): Int =  methodsList.size
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.binding.methodTextView.text = "${position+1} ${methodsList[position]}"
+        viewHolder.binding.methodTextView.text = "${position+1}. ${methodsList[position]}"
     }
 }

@@ -1,5 +1,6 @@
 package ru.redsoft.androidsprint
 
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView.Orientation
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.redsoft.androidsprint.databinding.FragmentRecipeBinding
 import ru.redsoft.androidsprint.models.Recipe
 
@@ -43,6 +46,21 @@ class RecipeFragment : Fragment() {
             )
         )
         binding.rvIngredients.adapter = IngredientsAdapter(it.ingredients)
+        binding.rvIngredients.addItemDecoration(
+                MaterialDividerItemDecoration(binding.rvIngredients.context, MaterialDividerItemDecoration.VERTICAL).also {
+                    it.dividerColor = context?.resources?.getColor(R.color.background_color)?:Color.BLACK
+                    it.dividerThickness = 1
+                }
+            )
+
+
+
         binding.rvMethod.adapter = MethodAdapter(it.method)
+        binding.rvMethod.addItemDecoration(
+            MaterialDividerItemDecoration(binding.rvMethod.context, MaterialDividerItemDecoration.VERTICAL).also {
+                it.dividerColor = context?.resources?.getColor(R.color.background_color)?:Color.BLACK
+                it.dividerThickness = 1
+            }
+        )
     }
 }

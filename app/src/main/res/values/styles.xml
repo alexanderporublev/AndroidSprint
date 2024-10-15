@@ -15,6 +15,13 @@
         <item name="android:textSize">@dimen/text_14</item>
     </style>
 
+    <style name="StyleTitle14GrayNoCaps" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/montserrat_alternates_light</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
     <style name="StyleNavButton" parent="Widget.Material3.Button">
         <item name="android:textAppearance">@style/StyleTitle14</item>
         <item name="android:paddingVertical">@dimen/padding</item>
