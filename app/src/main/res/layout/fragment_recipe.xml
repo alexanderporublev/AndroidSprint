@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/bcg_categories"/>
+                tools:src="@drawable/bcg_categories" />
 
             <TextView
                 android:id="@+id/recipeNameTextView"
@@ -33,7 +33,7 @@
                 android:padding="@dimen/padding"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="Рецепт приготовления бургера"/>
+                tools:text="Рецепт приготовления бургера" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

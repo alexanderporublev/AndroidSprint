@@ -40,27 +40,28 @@ class RecipeFragment : Fragment() {
 
     private fun initUI() = recipe?.also {
         binding.recipeNameTextView.text = it.title
+        val divider = MaterialDividerItemDecoration(
+            binding.rvIngredients.context,
+            MaterialDividerItemDecoration.VERTICAL
+        ).also { divider ->
+            context?.resources?.let { resources ->
+                divider.dividerColor = resources.getColor(R.color.gray_divider, context?.theme)
+                divider.dividerThickness = 1
+                divider.isLastItemDecorated = false
+                divider.dividerInsetEnd = 0
+                divider.dividerInsetStart = 0
+            }
+        }
         binding.headerImageView.setImageDrawable(
             Drawable.createFromStream(
                 context?.getAssets()?.open(it.imageUrl), null
             )
         )
+
         binding.rvIngredients.adapter = IngredientsAdapter(it.ingredients)
-        binding.rvIngredients.addItemDecoration(
-                MaterialDividerItemDecoration(binding.rvIngredients.context, MaterialDividerItemDecoration.VERTICAL).also {
-                    it.dividerColor = context?.resources?.getColor(R.color.background_color)?:Color.BLACK
-                    it.dividerThickness = 1
-                }
-            )
-
-
+        binding.rvIngredients.addItemDecoration(divider)
 
         binding.rvMethod.adapter = MethodAdapter(it.method)
-        binding.rvMethod.addItemDecoration(
-            MaterialDividerItemDecoration(binding.rvMethod.context, MaterialDividerItemDecoration.VERTICAL).also {
-                it.dividerColor = context?.resources?.getColor(R.color.background_color)?:Color.BLACK
-                it.dividerThickness = 1
-            }
-        )
+        binding.rvMethod.addItemDecoration(divider)
     }
 }

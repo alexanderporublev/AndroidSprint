@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        tools:text="Булочка для гамбургера"/>
+        tools:text="Булочка для гамбургера" />
 
     <TextView
         android:id="@+id/ingredientCountTextView"
@@ -20,6 +20,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        tools:text="1 ч. ложка"/>
+        tools:text="1 ч. ложка" />
 
 </LinearLayout>
