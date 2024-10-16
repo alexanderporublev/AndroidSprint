@@ -1,15 +1,14 @@
 package ru.redsoft.androidsprint
 
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView.Orientation
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.redsoft.androidsprint.databinding.FragmentRecipeBinding
 import ru.redsoft.androidsprint.models.Recipe
@@ -38,6 +37,7 @@ class RecipeFragment : Fragment() {
         initUI()
     }
 
+
     private fun initUI() = recipe?.also {
         binding.recipeNameTextView.text = it.title
         val divider = MaterialDividerItemDecoration(
@@ -48,8 +48,8 @@ class RecipeFragment : Fragment() {
                 divider.dividerColor = resources.getColor(R.color.gray_divider, context?.theme)
                 divider.dividerThickness = 1
                 divider.isLastItemDecorated = false
-                divider.dividerInsetEnd = 0
-                divider.dividerInsetStart = 0
+                divider.dividerInsetEnd = resources.getDimensionPixelSize(R.dimen.half_margin)
+                divider.dividerInsetStart = resources.getDimensionPixelSize(R.dimen.half_margin)
             }
         }
         binding.headerImageView.setImageDrawable(
@@ -57,11 +57,35 @@ class RecipeFragment : Fragment() {
                 context?.getAssets()?.open(it.imageUrl), null
             )
         )
-
-        binding.rvIngredients.adapter = IngredientsAdapter(it.ingredients)
+        val ingredientsAdapter = IngredientsAdapter(it.ingredients)
+        binding.rvIngredients.adapter = ingredientsAdapter
         binding.rvIngredients.addItemDecoration(divider)
 
         binding.rvMethod.adapter = MethodAdapter(it.method)
         binding.rvMethod.addItemDecoration(divider)
+
+        context?.resources?.let { resources ->
+            binding.portionsCountTextView.text = resources.getString(
+                R.string.portions_count,
+                resources.getInteger(R.integer.min_portions_count)
+            )
+        }
+
+        binding.portionsCountSeekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                binding.portionsCountTextView.text =
+                    resources.getString(R.string.portions_count, progress)
+                ingredientsAdapter.updateIngredients(progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+            }
+        })
+
     }
 }

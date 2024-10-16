@@ -6,8 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.redsoft.androidsprint.databinding.ItemIngredientBinding
 import ru.redsoft.androidsprint.models.Ingredient
 
-class IngredientsAdapter(private val ingredientsList: List<Ingredient>) :
+class IngredientsAdapter(
+    private val ingredientsList: List<Ingredient>,
+    private var portionsCount: Int = 1
+) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
+
     class ViewHolder(val binding: ItemIngredientBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -21,7 +25,19 @@ class IngredientsAdapter(private val ingredientsList: List<Ingredient>) :
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.binding.ingredientNameTextView.text = ingredientsList[position].description
+
+        val quantity = try {
+            "${ingredientsList[position].quantity.toInt() * portionsCount}"
+        } catch (e: NumberFormatException) {
+            "%.1f".format(ingredientsList[position].quantity.toFloat() * portionsCount)
+        }
+
         viewHolder.binding.ingredientCountTextView.text =
-            "${ingredientsList[position].quantity} ${ingredientsList[position].unitOfMeasure}"
+            "$quantity ${ingredientsList[position].unitOfMeasure}"
+    }
+
+    fun updateIngredients(progress: Int) {
+        portionsCount = progress
+        notifyDataSetChanged()
     }
 }
