@@ -8,4 +8,5 @@
     <color name="purple_text">#5F3678</color>
     <color name="gray_text">#666666</color>
     <color name="gray_divider">#F5F5F5</color>
+    <color name="portions_text_color">#626466</color>
 </resources>

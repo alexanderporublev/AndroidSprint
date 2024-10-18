@@ -13,7 +13,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.redsoft.androidsprint.databinding.FragmentRecipeBinding
 import ru.redsoft.androidsprint.models.Recipe
 
-class RecipeFragment : Fragment() {
+class RecipeFragment: Fragment() {
 
     private var recipe: Recipe? = null
     val binding: FragmentRecipeBinding by lazy { FragmentRecipeBinding.inflate(layoutInflater) }
@@ -54,7 +54,7 @@ class RecipeFragment : Fragment() {
         }
         binding.headerImageView.setImageDrawable(
             Drawable.createFromStream(
-                context?.getAssets()?.open(it.imageUrl), null
+                context?.assets?.open(it.imageUrl), null
             )
         )
         val ingredientsAdapter = IngredientsAdapter(it.ingredients)

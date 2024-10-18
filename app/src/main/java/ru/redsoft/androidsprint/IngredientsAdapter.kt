@@ -8,9 +8,9 @@ import ru.redsoft.androidsprint.models.Ingredient
 
 class IngredientsAdapter(
     private val ingredientsList: List<Ingredient>,
+) :    RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
+
     private var portionsCount: Int = 1
-) :
-    RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemIngredientBinding) : RecyclerView.ViewHolder(binding.root)
 
