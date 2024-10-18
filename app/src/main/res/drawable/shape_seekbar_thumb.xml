@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/portions_seekbar_thumb_color" />
+            <corners android:radius="@dimen/half_main_spacing" />
+            <size android:width="@dimen/half_margin" android:height="@dimen/thumb_height" />
+        </shape>
+    </item>
+</selector>

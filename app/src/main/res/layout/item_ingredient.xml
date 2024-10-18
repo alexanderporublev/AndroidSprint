@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="@dimen/half_margin">
+    android:paddingHorizontal="@dimen/ingredient_padding"
+    android:paddingVertical="@dimen/half_margin">
 
     <TextView
         android:id="@+id/ingredientNameTextView"

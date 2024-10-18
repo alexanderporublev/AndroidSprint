@@ -48,19 +48,20 @@
 
         <TextView
             android:id="@+id/portionsCountTextView"
+            style="@style/StyleTitle16Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
             android:layout_marginTop="@dimen/half_margin"
-            android:text="@string/portions_count"
-            style="@style/StyleTitle16Gray"/>
+            android:text="@string/portions_count" />
 
         <SeekBar
             android:id="@+id/portionsCountSeekBar"
+            style="@style/styleSeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:min="@integer/min_portions_count"
-            android:max="@integer/max_portions_count" />
+            android:max="@integer/max_portions_count"
+            android:min="@integer/min_portions_count" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvIngredients"
@@ -85,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin"
-            android:background="@color/white"
+            android:background="@drawable/rounded_rectangle_shape_white"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_method" />
     </LinearLayout>
