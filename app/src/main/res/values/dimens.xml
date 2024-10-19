@@ -17,4 +17,5 @@
     <dimen name="text_20">20sp</dimen>
     <dimen name="text_24">24sp</dimen>
     <dimen name="thumb_height">30dp</dimen>
+    <dimen name="heart_icon_size">40dp</dimen>
 </resources>
