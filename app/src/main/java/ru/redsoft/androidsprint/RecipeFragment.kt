@@ -1,5 +1,6 @@
 package ru.redsoft.androidsprint
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -38,6 +39,7 @@ class RecipeFragment: Fragment() {
     }
 
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun initUI() = recipe?.also {
         binding.recipeNameTextView.text = it.title
         val divider = MaterialDividerItemDecoration(
@@ -86,6 +88,11 @@ class RecipeFragment: Fragment() {
 
             }
         })
+
+        binding.addToFavoriteButton.setImageDrawable(context?.resources?.getDrawable(R.drawable.ic_favorite_normal, context?.theme))
+        binding.addToFavoriteButton.setOnClickListener {
+            binding.addToFavoriteButton.setImageDrawable(context?.resources?.getDrawable(R.drawable.ic_heart, context?.theme))
+        }
 
     }
 }
