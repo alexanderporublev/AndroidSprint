@@ -8,4 +8,5 @@
     <string name="category_recipes_image">Изображение категории рецептов: %1s</string>
     <string name="title_ingredients">Ингридиенты</string>
     <string name="title_method">Способ приготовления</string>
+    <string name="portions_count">Порции: %1d</string>
 </resources>
