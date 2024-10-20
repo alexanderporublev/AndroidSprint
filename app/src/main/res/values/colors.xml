@@ -9,4 +9,6 @@
     <color name="gray_text">#666666</color>
     <color name="gray_divider">#F5F5F5</color>
     <color name="portions_text_color">#626466</color>
+    <color name="portions_seekbar_color">#A1A9F9</color>
+    <color name="portions_seekbar_thumb_color">#525DC0</color>
 </resources>

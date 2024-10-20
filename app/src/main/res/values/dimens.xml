@@ -4,6 +4,7 @@
     <dimen name="half_main_spacing">2dp</dimen>
     <dimen name="margin">16dp</dimen>
     <dimen name="half_margin">8dp</dimen>
+    <dimen name="ingredient_padding">12dp</dimen>
     <dimen name="padding">10dp</dimen>
     <dimen name="double_padding">20dp</dimen>
     <dimen name="card_height">130dp</dimen>
@@ -15,4 +16,5 @@
     <dimen name="text_16">16sp</dimen>
     <dimen name="text_20">20sp</dimen>
     <dimen name="text_24">24sp</dimen>
+    <dimen name="thumb_height">30dp</dimen>
 </resources>
