@@ -9,4 +9,5 @@
     <string name="title_ingredients">Ингридиенты</string>
     <string name="title_method">Способ приготовления</string>
     <string name="portions_count">Порции: %1d</string>
+    <string name="add_recipe_to_favorite">Кнопка добавление рецепта в избранное</string>
 </resources>

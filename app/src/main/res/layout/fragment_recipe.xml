@@ -15,6 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/header_image_height">
 
+
+
             <ImageView
                 android:id="@+id/headerImageView"
                 android:layout_width="match_parent"
@@ -34,6 +36,18 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="Рецепт приготовления бургера" />
+
+            <ImageButton
+                android:id="@+id/addToFavoriteButton"
+                android:layout_width="@dimen/heart_icon_size"
+                android:layout_height="@dimen/heart_icon_size"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/margin"
+                tools:src="@drawable/ic_heart"
+                android:scaleType="fitCenter"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/add_recipe_to_favorite"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
