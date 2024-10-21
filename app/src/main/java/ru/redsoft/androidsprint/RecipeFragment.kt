@@ -19,7 +19,7 @@ class RecipeFragment : Fragment() {
 
     private var recipe: Recipe? = null
 
-
+    val sharedPrefs by lazy { activity?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE) }
     val binding: FragmentRecipeBinding by lazy { FragmentRecipeBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
@@ -90,38 +90,39 @@ class RecipeFragment : Fragment() {
 
         switchFavoriteIcon()
         binding.addToFavoriteButton.setOnClickListener {
-            getFavorites()?.let { favorites ->
-                if (favorites.contains(recipe?.id.toString()))
+            getFavorites().let { favorites ->
+                val isFavorite = isFavorite()
+                if (isFavorite)
                     saveFavorites(favorites - recipe?.id.toString())
                 else
                     saveFavorites(favorites + recipe?.id.toString())
+                switchFavoriteIcon(isFavorite)
             }
-            switchFavoriteIcon()
+
         }
 
     }
 
     private fun saveFavorites(ids: Set<String>) = activity?.let { activity ->
-        val sharedPrefs = activity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val editor = sharedPrefs.edit()
-        editor.putStringSet(PREFS_FAVORITE_IDS, ids)
-        editor.apply()
+
+        val editor = sharedPrefs?.edit()
+        editor?.putStringSet(PREFS_FAVORITE_IDS, ids)
+        editor?.apply()
     }
 
-    private fun getFavorites() = activity?.let { activity ->
-        val sharedPrefs = activity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        sharedPrefs.getStringSet(PREFS_FAVORITE_IDS, emptySet())?.let { HashSet<String>(it) }
+    private fun getFavorites() =
+        sharedPrefs?.getStringSet(PREFS_FAVORITE_IDS, emptySet())?.let { HashSet<String>(it) }
             ?: HashSet()
-    }
 
-    private fun switchFavoriteIcon() = binding.addToFavoriteButton.setImageDrawable(
+
+    private fun switchFavoriteIcon(isFavorite: Boolean) = binding.addToFavoriteButton.setImageDrawable(
         context?.resources?.getDrawable(
-            if (isFavorite()) R.drawable.ic_heart else R.drawable.ic_heart_empty,
+            if (isFavorite) R.drawable.ic_heart else R.drawable.ic_heart_empty,
             context?.theme
         )
     )
 
-    private fun isFavorite() = getFavorites()?.contains(recipe?.id.toString()) ?: false
+    private fun isFavorite() = getFavorites().contains(recipe?.id.toString()) ?: false
 
     companion object {
         const val PREFS_NAME = "recipes_preferences"
