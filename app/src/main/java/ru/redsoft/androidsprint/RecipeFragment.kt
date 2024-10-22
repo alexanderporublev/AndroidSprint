@@ -1,5 +1,6 @@
 package ru.redsoft.androidsprint
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -16,6 +17,8 @@ import ru.redsoft.androidsprint.models.Recipe
 class RecipeFragment: Fragment() {
 
     private var recipe: Recipe? = null
+    private var isFavorite = false
+
     val binding: FragmentRecipeBinding by lazy { FragmentRecipeBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
@@ -38,6 +41,7 @@ class RecipeFragment: Fragment() {
     }
 
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun initUI() = recipe?.also {
         binding.recipeNameTextView.text = it.title
         val divider = MaterialDividerItemDecoration(
@@ -87,5 +91,14 @@ class RecipeFragment: Fragment() {
             }
         })
 
+        switchFavoriteIcon()
+        binding.addToFavoriteButton.setOnClickListener {
+            isFavorite = !isFavorite
+            switchFavoriteIcon()
+        }
+
     }
+
+    private fun switchFavoriteIcon() = binding.addToFavoriteButton.setImageDrawable(context?.resources?.getDrawable(if (isFavorite) R.drawable.ic_heart else R.drawable.ic_heart_empty, context?.theme))
+
 }
