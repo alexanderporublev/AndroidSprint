@@ -18,8 +18,7 @@ import ru.redsoft.androidsprint.models.Recipe
 class RecipeFragment : Fragment() {
 
     private var recipe: Recipe? = null
-
-    val sharedPrefs by lazy { activity?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE) }
+    private val preferences: RecipesPreferences by lazy {RecipesPreferences(activity?:throw Exception("Not activity"))}
     val binding: FragmentRecipeBinding by lazy { FragmentRecipeBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
@@ -88,14 +87,14 @@ class RecipeFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
         })
 
-        switchFavoriteIcon()
+        switchFavoriteIcon(isFavorite())
         binding.addToFavoriteButton.setOnClickListener {
-            getFavorites().let { favorites ->
+            preferences.getFavorites().let { favorites ->
                 val isFavorite = isFavorite()
                 if (isFavorite)
-                    saveFavorites(favorites - recipe?.id.toString())
+                    preferences.saveFavorites(favorites - recipe?.id.toString())
                 else
-                    saveFavorites(favorites + recipe?.id.toString())
+                    preferences.saveFavorites(favorites + recipe?.id.toString())
                 switchFavoriteIcon(isFavorite)
             }
 
@@ -103,18 +102,10 @@ class RecipeFragment : Fragment() {
 
     }
 
-    private fun saveFavorites(ids: Set<String>) = activity?.let { activity ->
-
-        val editor = sharedPrefs?.edit()
-        editor?.putStringSet(PREFS_FAVORITE_IDS, ids)
-        editor?.apply()
-    }
-
-    private fun getFavorites() =
-        sharedPrefs?.getStringSet(PREFS_FAVORITE_IDS, emptySet())?.let { HashSet<String>(it) }
-            ?: HashSet()
 
 
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun switchFavoriteIcon(isFavorite: Boolean) = binding.addToFavoriteButton.setImageDrawable(
         context?.resources?.getDrawable(
             if (isFavorite) R.drawable.ic_heart else R.drawable.ic_heart_empty,
@@ -122,10 +113,7 @@ class RecipeFragment : Fragment() {
         )
     )
 
-    private fun isFavorite() = getFavorites().contains(recipe?.id.toString()) ?: false
+    private fun isFavorite() = preferences.getFavorites().contains(recipe?.id.toString()) ?: false
 
-    companion object {
-        const val PREFS_NAME = "recipes_preferences"
-        const val PREFS_FAVORITE_IDS = "favorite_ids"
-    }
+
 }
