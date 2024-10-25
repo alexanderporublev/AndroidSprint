@@ -16,8 +16,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/image_favorite"
             android:scaleType="centerCrop"
-            android:src="@drawable/bcg_favorites"
-            />
+            android:src="@drawable/bcg_favorites" />
 
         <TextView
             style="@style/StyleTitle20"
@@ -33,6 +32,16 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/emptyFavoritesPlaceHolder"
+        style="@style/StyleTitle16Gray"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/no_favorites_placeholder"
+        android:textAlignment="center"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecipes"
         android:layout_width="match_parent"
@@ -40,8 +49,7 @@
         android:layout_marginHorizontal="@dimen/half_margin"
         android:layout_marginVertical="@dimen/half_margin"
         android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="1"
+        app:layoutManager="LinearLayoutManager"
         tools:itemCount="6"
         tools:listitem="@layout/item_recipe" />
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.transition.Visibility
 import ru.redsoft.androidsprint.RecipesListFragment.Companion.ARG_RECIPE
 import ru.redsoft.androidsprint.databinding.FragmentFavoritesBinding
 import ru.redsoft.androidsprint.stubs.STUB
@@ -15,7 +16,7 @@ import ru.redsoft.androidsprint.stubs.STUB
 class FavoritesFragment : Fragment() {
     private val preferences: RecipesPreferences by lazy {
         RecipesPreferences(
-            activity ?: throw Exception("Not activity")
+            context ?: throw Exception("Not activity")
         )
     }
 
@@ -32,15 +33,23 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecycler()
+        initUI()
     }
 
-    fun initRecycler() {
-        binding.rvRecipes.adapter =
-            RecipesListAdapter(STUB.getRecipeByIds(preferences.getFavorites().map { it.toInt() }
-                .toSet())).also { adapter ->
-                adapter.onItemClickCallback = { openRecipeByRecipeId(it) }
-            }
+    fun initUI() {
+        val favoriteRecipes =
+            STUB.getRecipeByIds(preferences.getFavorites().map { it.toInt() }.toSet())
+        if (favoriteRecipes.isEmpty()) {
+            binding.rvRecipes.visibility = View.GONE
+            binding.emptyFavoritesPlaceHolder.visibility = View.VISIBLE
+        } else {
+            binding.rvRecipes.visibility = View.VISIBLE
+            binding.emptyFavoritesPlaceHolder.visibility = View.GONE
+            binding.rvRecipes.adapter =
+                RecipesListAdapter(favoriteRecipes).also { adapter ->
+                    adapter.onItemClickCallback = { openRecipeByRecipeId(it) }
+                }
+        }
     }
 
     private fun openRecipeByRecipeId(id: Int) {

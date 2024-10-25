@@ -1,10 +1,9 @@
 package ru.redsoft.androidsprint
 
-import android.app.Activity
 import android.content.Context
 
-class RecipesPreferences(val activity: Activity) {
-    private val sharedPrefs = activity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+class RecipesPreferences(val context: Context) {
+    private val sharedPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     fun saveFavorites(ids: Set<String>) {
         val editor = sharedPrefs?.edit()

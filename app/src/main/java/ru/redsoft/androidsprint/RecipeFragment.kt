@@ -18,7 +18,11 @@ import ru.redsoft.androidsprint.models.Recipe
 class RecipeFragment : Fragment() {
 
     private var recipe: Recipe? = null
-    private val preferences: RecipesPreferences by lazy {RecipesPreferences(activity?:throw Exception("Not activity"))}
+    private val preferences: RecipesPreferences by lazy {
+        RecipesPreferences(
+            context ?: throw Exception("Not context")
+        )
+    }
     val binding: FragmentRecipeBinding by lazy { FragmentRecipeBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
@@ -95,7 +99,7 @@ class RecipeFragment : Fragment() {
                     preferences.saveFavorites(favorites - recipe?.id.toString())
                 else
                     preferences.saveFavorites(favorites + recipe?.id.toString())
-                switchFavoriteIcon(isFavorite)
+                switchFavoriteIcon(!isFavorite)
             }
 
         }
@@ -103,15 +107,14 @@ class RecipeFragment : Fragment() {
     }
 
 
-
-
     @SuppressLint("UseCompatLoadingForDrawables")
-    private fun switchFavoriteIcon(isFavorite: Boolean) = binding.addToFavoriteButton.setImageDrawable(
-        context?.resources?.getDrawable(
-            if (isFavorite) R.drawable.ic_heart else R.drawable.ic_heart_empty,
-            context?.theme
+    private fun switchFavoriteIcon(isFavorite: Boolean) =
+        binding.addToFavoriteButton.setImageDrawable(
+            context?.resources?.getDrawable(
+                if (isFavorite) R.drawable.ic_heart else R.drawable.ic_heart_empty,
+                context?.theme
+            )
         )
-    )
 
     private fun isFavorite() = preferences.getFavorites().contains(recipe?.id.toString()) ?: false
 
