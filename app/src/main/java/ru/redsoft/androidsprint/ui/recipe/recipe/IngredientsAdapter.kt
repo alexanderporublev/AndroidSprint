@@ -1,10 +1,10 @@
-package ru.redsoft.androidsprint
+package ru.redsoft.androidsprint.ui.recipe.recipe
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.redsoft.androidsprint.databinding.ItemIngredientBinding
-import ru.redsoft.androidsprint.models.Ingredient
+import ru.redsoft.androidsprint.data.Ingredient
 
 class IngredientsAdapter(
     private val ingredientsList: List<Ingredient>,

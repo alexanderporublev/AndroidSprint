@@ -1,4 +1,4 @@
-package ru.redsoft.androidsprint
+package ru.redsoft.androidsprint.ui.recipe.recipe
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

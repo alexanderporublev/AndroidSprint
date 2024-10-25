@@ -1,7 +1,6 @@
-package ru.redsoft.androidsprint
+package ru.redsoft.androidsprint.ui.recipe.recipe
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -12,8 +11,11 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import ru.redsoft.androidsprint.R
+import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
+import ru.redsoft.androidsprint.RecipesPreferences
 import ru.redsoft.androidsprint.databinding.FragmentRecipeBinding
-import ru.redsoft.androidsprint.models.Recipe
+import ru.redsoft.androidsprint.data.Recipe
 
 class RecipeFragment : Fragment() {
 

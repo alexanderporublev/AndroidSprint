@@ -1,8 +1,8 @@
 package ru.redsoft.androidsprint.stubs
 
-import ru.redsoft.androidsprint.models.Category
-import ru.redsoft.androidsprint.models.Ingredient
-import ru.redsoft.androidsprint.models.Recipe
+import ru.redsoft.androidsprint.data.Category
+import ru.redsoft.androidsprint.data.Ingredient
+import ru.redsoft.androidsprint.data.Recipe
 
 object STUB {
     private val categories = listOf(

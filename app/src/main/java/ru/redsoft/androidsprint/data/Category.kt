@@ -1,4 +1,4 @@
-package ru.redsoft.androidsprint.models
+package ru.redsoft.androidsprint.data
 
 data class Category(
     val id: Int,
