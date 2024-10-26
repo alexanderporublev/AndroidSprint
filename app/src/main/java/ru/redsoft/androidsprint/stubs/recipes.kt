@@ -274,4 +274,7 @@ object STUB {
     }
 
     fun getRecipeById(id: Int): Recipe? = burgerRecipes.find { it.id == id }
+
+    fun getRecipeByIds(ids: Set<Int>) =  burgerRecipes.filter { ids.contains(it.id) }
+
 }
