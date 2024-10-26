@@ -1,4 +1,4 @@
-package ru.redsoft.androidsprint.data
+package ru.redsoft.androidsprint.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

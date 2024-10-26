@@ -1,10 +1,11 @@
 package ru.redsoft.androidsprint.ui.recipe.recipe
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import ru.redsoft.androidsprint.data.Recipe
+import ru.redsoft.androidsprint.model.Recipe
 
 data class RecipeUiState(
     val recipe: Recipe? = null,
@@ -13,7 +14,5 @@ data class RecipeUiState(
 )
 
 class RecipeViewModel: ViewModel() {
-    private val _uiState = MutableStateFlow(RecipeUiState())
-    val uiState: StateFlow<RecipeUiState> = _uiState.asStateFlow()
-
+    val _uiState = MutableLiveData(RecipeUiState())
 }

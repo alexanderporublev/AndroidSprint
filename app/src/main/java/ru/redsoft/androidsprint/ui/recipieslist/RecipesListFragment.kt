@@ -11,7 +11,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.databinding.FragmentRecipesListBinding
-import ru.redsoft.androidsprint.stubs.STUB
+import ru.redsoft.androidsprint.data.stubs.STUB
 import ru.redsoft.androidsprint.ui.category.CategoriesListFragment
 import ru.redsoft.androidsprint.ui.recipe.recipe.RecipeFragment
 

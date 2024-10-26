@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.redsoft.androidsprint.databinding.ItemCategoryBinding
-import ru.redsoft.androidsprint.data.Category
+import ru.redsoft.androidsprint.model.Category
 
 
 class CategoriesListAdapter(private val categoriesList: List<Category>) :

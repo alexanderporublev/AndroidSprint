@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import androidx.transition.Visibility
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.RecipesPreferences
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment.Companion.ARG_RECIPE
 import ru.redsoft.androidsprint.databinding.FragmentFavoritesBinding
-import ru.redsoft.androidsprint.stubs.STUB
+import ru.redsoft.androidsprint.data.stubs.STUB
 import ru.redsoft.androidsprint.ui.recipe.recipe.RecipeFragment
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListAdapter
 

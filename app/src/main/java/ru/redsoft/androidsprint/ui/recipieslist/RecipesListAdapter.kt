@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.databinding.ItemRecipeBinding
-import ru.redsoft.androidsprint.data.Recipe
+import ru.redsoft.androidsprint.model.Recipe
 
 class RecipesListAdapter (private val recipesList: List<Recipe>) :
     RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {

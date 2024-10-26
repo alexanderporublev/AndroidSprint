@@ -15,7 +15,7 @@ import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
 import ru.redsoft.androidsprint.RecipesPreferences
 import ru.redsoft.androidsprint.databinding.FragmentRecipeBinding
-import ru.redsoft.androidsprint.data.Recipe
+import ru.redsoft.androidsprint.model.Recipe
 
 class RecipeFragment : Fragment() {
 

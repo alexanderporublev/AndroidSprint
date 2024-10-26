@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.redsoft.androidsprint.databinding.ItemIngredientBinding
-import ru.redsoft.androidsprint.data.Ingredient
+import ru.redsoft.androidsprint.model.Ingredient
 
 class IngredientsAdapter(
     private val ingredientsList: List<Ingredient>,
