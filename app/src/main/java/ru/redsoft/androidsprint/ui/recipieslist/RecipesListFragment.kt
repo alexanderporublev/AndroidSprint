@@ -20,7 +20,11 @@ class RecipesListFragment : Fragment() {
     private var categoryName: String? = null
     private var categoryImageUrl: String? = null
 
-    val binding: FragmentRecipesListBinding by lazy { FragmentRecipesListBinding.inflate(layoutInflater) }
+    val binding: FragmentRecipesListBinding by lazy {
+        FragmentRecipesListBinding.inflate(
+            layoutInflater
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,31 +44,31 @@ class RecipesListFragment : Fragment() {
                 binding.root.context.getAssets().open(categoryImageUrl), null
             )
             binding.headerImageView.setImageDrawable(categoryImageDrawable)
-            binding.headerImageView.contentDescription = getString(R.string.category_recipes_image, categoryName)
-            }
-        binding.categoryNameTextView.text = categoryName?:""
+            binding.headerImageView.contentDescription =
+                getString(R.string.category_recipes_image, categoryName)
+        }
+        binding.categoryNameTextView.text = categoryName ?: ""
         initRecycler()
     }
 
     private fun initRecycler() {
-        binding.rvRecipes.adapter = RecipesListAdapter(STUB.getRecipesByCategoryId(categoryId?:-1)).also { adapter ->
-            adapter.onItemClickCallback = {
-                openRecipeByRecipeId(it)
+        binding.rvRecipes.adapter =
+            RecipesListAdapter(STUB.getRecipesByCategoryId(categoryId ?: -1)).also { adapter ->
+                adapter.onItemClickCallback = {
+                    openRecipeByRecipeId(it)
+                }
             }
-        }
     }
 
     private fun openRecipeByRecipeId(id: Int) {
-        STUB.getRecipeById(id)?.let {
-            parentFragmentManager.commit {
-                val bundle = bundleOf(ARG_RECIPE to it)
-                setReorderingAllowed(true)
-                replace<RecipeFragment>(R.id.fragmentContainerView, args = bundle)
-            }
+        parentFragmentManager.commit {
+            val bundle = bundleOf(ARG_RECIPE_ID to id)
+            setReorderingAllowed(true)
+            replace<RecipeFragment>(R.id.fragmentContainerView, args = bundle)
         }
     }
 
     companion object {
-        const val ARG_RECIPE = "arg_recipe"
+        const val ARG_RECIPE_ID = "arg_recipe_id"
     }
 }

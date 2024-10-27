@@ -10,7 +10,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.RecipesPreferences
-import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment.Companion.ARG_RECIPE
+import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment.Companion.ARG_RECIPE_ID
 import ru.redsoft.androidsprint.databinding.FragmentFavoritesBinding
 import ru.redsoft.androidsprint.data.stubs.STUB
 import ru.redsoft.androidsprint.ui.recipe.recipe.RecipeFragment
@@ -58,7 +58,7 @@ class FavoritesFragment : Fragment() {
     private fun openRecipeByRecipeId(id: Int) {
         STUB.getRecipeById(id)?.let {
             parentFragmentManager.commit {
-                val bundle = bundleOf(ARG_RECIPE to it)
+                val bundle = bundleOf(ARG_RECIPE_ID to it)
                 setReorderingAllowed(true)
                 replace<RecipeFragment>(R.id.fragmentContainerView, args = bundle)
             }

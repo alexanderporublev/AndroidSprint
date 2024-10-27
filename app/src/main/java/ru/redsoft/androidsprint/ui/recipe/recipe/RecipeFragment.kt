@@ -12,7 +12,6 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
@@ -22,7 +21,7 @@ import ru.redsoft.androidsprint.model.Recipe
 
 class RecipeFragment : Fragment() {
 
-    private var recipe: Recipe? = null
+    private var recipeId: Int? = null
     private val preferences: RecipesPreferences by lazy {
         RecipesPreferences(
             context ?: throw Exception("Not context")
@@ -42,23 +41,21 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                it.getParcelable(RecipesListFragment.ARG_RECIPE, Recipe::class.java)
-            } else {
-                it.getParcelable(RecipesListFragment.ARG_RECIPE)
-            }
+            recipeId = it.getInt(RecipesListFragment.ARG_RECIPE_ID)
         } ?: throw IllegalArgumentException("No arguments has been provided")
         initUI()
-
-        viewModel.uiState.observe(this, Observer { state ->
-            Log.i("!!!", "${state.isFavorite}")
-        })
+        viewModel.loadRecipe(
+            recipeId ?: throw IllegalArgumentException("No recipeid has been provided")
+        )
     }
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private fun initUI() = recipe?.also {
-        binding.recipeNameTextView.text = it.title
+    private fun initUI() = viewModel.uiState.observe(viewLifecycleOwner) { state ->
+        if (state.recipe == null)
+            return@observe
+        binding.recipeNameTextView.text = state.recipe.title
+
         val divider = MaterialDividerItemDecoration(
             binding.rvIngredients.context,
             MaterialDividerItemDecoration.VERTICAL
@@ -73,14 +70,15 @@ class RecipeFragment : Fragment() {
         }
         binding.headerImageView.setImageDrawable(
             Drawable.createFromStream(
-                context?.assets?.open(it.imageUrl), null
+                context?.assets?.open(state.recipe.imageUrl ?: throw Exception("No image url")),
+                null
             )
         )
-        val ingredientsAdapter = IngredientsAdapter(it.ingredients)
+        val ingredientsAdapter = IngredientsAdapter(state.recipe.ingredients)
         binding.rvIngredients.adapter = ingredientsAdapter
         binding.rvIngredients.addItemDecoration(divider)
 
-        binding.rvMethod.adapter = MethodAdapter(it.method)
+        binding.rvMethod.adapter = MethodAdapter(state.recipe.method)
         binding.rvMethod.addItemDecoration(divider)
 
         context?.resources?.let { resources ->
@@ -102,17 +100,14 @@ class RecipeFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
         })
 
-        switchFavoriteIcon(isFavorite())
+        switchFavoriteIcon(state.isFavorite)
         binding.addToFavoriteButton.setOnClickListener {
             preferences.getFavorites().let { favorites ->
-                val isFavorite = isFavorite()
-                if (isFavorite)
-                    preferences.saveFavorites(favorites - recipe?.id.toString())
+                if (state.isFavorite)
+                    viewModel.saveFavorites(favorites - state.recipe.id.toString())
                 else
-                    preferences.saveFavorites(favorites + recipe?.id.toString())
-                switchFavoriteIcon(!isFavorite)
+                    viewModel.saveFavorites(favorites + state.recipe.id.toString())
             }
-
         }
 
     }
@@ -126,8 +121,6 @@ class RecipeFragment : Fragment() {
                 context?.theme
             )
         )
-
-    private fun isFavorite() = preferences.getFavorites().contains(recipe?.id.toString()) ?: false
 
 
 }
