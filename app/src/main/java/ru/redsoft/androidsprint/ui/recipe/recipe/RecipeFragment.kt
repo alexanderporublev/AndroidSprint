@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
@@ -26,6 +29,8 @@ class RecipeFragment : Fragment() {
         )
     }
     val binding: FragmentRecipeBinding by lazy { FragmentRecipeBinding.inflate(layoutInflater) }
+
+    private val viewModel: RecipeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +49,10 @@ class RecipeFragment : Fragment() {
             }
         } ?: throw IllegalArgumentException("No arguments has been provided")
         initUI()
+
+        viewModel.uiState.observe(this, Observer { state ->
+            Log.i("!!!", "${state.isFavorite}")
+        })
     }
 
 
