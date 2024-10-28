@@ -1,8 +1,6 @@
 package ru.redsoft.androidsprint
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -10,6 +8,8 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import ru.redsoft.androidsprint.databinding.ActivityMainBinding
+import ru.redsoft.androidsprint.ui.category.CategoriesListFragment
+import ru.redsoft.androidsprint.ui.recipe.favorite.FavoritesFragment
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {

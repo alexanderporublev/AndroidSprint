@@ -1,4 +1,4 @@
-package ru.redsoft.androidsprint
+package ru.redsoft.androidsprint.ui.recipieslist
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -9,9 +9,11 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import ru.redsoft.androidsprint.CategoriesListFragment.Companion.ARG_CATEGORY_ID
+import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.databinding.FragmentRecipesListBinding
-import ru.redsoft.androidsprint.stubs.STUB
+import ru.redsoft.androidsprint.data.stubs.STUB
+import ru.redsoft.androidsprint.ui.category.CategoriesListFragment
+import ru.redsoft.androidsprint.ui.recipe.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {
     private var categoryId: Int? = null

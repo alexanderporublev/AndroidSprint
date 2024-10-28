@@ -1,11 +1,11 @@
-package ru.redsoft.androidsprint
+package ru.redsoft.androidsprint.ui.category
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.redsoft.androidsprint.databinding.ItemCategoryBinding
-import ru.redsoft.androidsprint.models.Category
+import ru.redsoft.androidsprint.model.Category
 
 
 class CategoriesListAdapter(private val categoriesList: List<Category>) :
