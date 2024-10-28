@@ -84,11 +84,14 @@ class RecipeFragment : Fragment() {
             )
         }
 
+        binding.portionsCountTextView.text =
+            resources.getString(R.string.portions_count, state.portionsCount)
+        ingredientsAdapter.updateIngredients(state.portionsCount)
+
+
         binding.portionsCountSeekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                binding.portionsCountTextView.text =
-                    resources.getString(R.string.portions_count, progress)
-                ingredientsAdapter.updateIngredients(progress)
+                viewModel.setPortionsCount(progress)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) = Unit

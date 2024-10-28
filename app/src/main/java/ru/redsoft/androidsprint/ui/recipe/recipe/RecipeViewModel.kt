@@ -33,7 +33,6 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         )
     }
 
-
     fun loadRecipe(recipeId: Int) {
         //TODO: load from network
         _uiState.value = _uiState.value?.copy(
@@ -54,6 +53,8 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun getFavorites() = preferences.getFavorites()
+
+    fun setPortionsCount(count: Int) = _uiState.value?.copy(portionsCount = count)
 
     private fun imageDrawable(imageUrl: String): Drawable? =
         Drawable.createFromStream(context.assets?.open(imageUrl), null)
