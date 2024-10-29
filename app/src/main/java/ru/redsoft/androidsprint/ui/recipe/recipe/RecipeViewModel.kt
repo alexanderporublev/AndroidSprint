@@ -1,12 +1,17 @@
 package ru.redsoft.androidsprint.ui.recipe.recipe
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import ru.redsoft.androidsprint.RecipesPreferences
+import ru.redsoft.androidsprint.data.stubs.STUB
 import ru.redsoft.androidsprint.model.Recipe
 
 data class RecipeUiState(
@@ -15,14 +20,31 @@ data class RecipeUiState(
     val isFavorite: Boolean = false,
 )
 
-class RecipeViewModel : ViewModel() {
+class RecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val _uiState = MutableLiveData(RecipeUiState())
     val uiState: LiveData<RecipeUiState> get() = _uiState
 
-    init {
-        Log.i("!!!", "Start model")
-        _uiState.value = RecipeUiState()
-        Log.i("!!!", "1")
-        _uiState.value = _uiState.value?.copy(isFavorite = true)
+    private val preferences: RecipesPreferences by lazy {
+        RecipesPreferences(
+            application.applicationContext
+        )
     }
+
+
+    fun loadRecipe(recipeId: Int) {
+        //TODO: load from network
+        _uiState.value = _uiState.value?.copy(
+            recipe = STUB.getRecipeById(recipeId),
+            isFavorite = getFavorites().contains(recipeId.toString()),
+        )
+    }
+
+    fun saveFavorites(ids: Set<String>) {
+        preferences.saveFavorites(ids)
+        _uiState.value = _uiState.value?.copy(
+            isFavorite = ids.contains(_uiState.value?.recipe?.id.toString()),
+        )
+    }
+
+    fun getFavorites() = preferences.getFavorites()
 }
