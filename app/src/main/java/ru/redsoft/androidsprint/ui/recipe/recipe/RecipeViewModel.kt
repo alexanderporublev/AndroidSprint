@@ -2,6 +2,7 @@ package ru.redsoft.androidsprint.ui.recipe.recipe
 
 import android.app.Application
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -18,15 +19,17 @@ data class RecipeUiState(
     val recipe: Recipe? = null,
     val portionsCount: Int = 1,
     val isFavorite: Boolean = false,
+    val recipeImage: Drawable? = null,
 )
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val _uiState = MutableLiveData(RecipeUiState())
     val uiState: LiveData<RecipeUiState> get() = _uiState
+    val context: Context by lazy { application.applicationContext }
 
     private val preferences: RecipesPreferences by lazy {
         RecipesPreferences(
-            application.applicationContext
+            context
         )
     }
 
@@ -36,6 +39,10 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         _uiState.value = _uiState.value?.copy(
             recipe = STUB.getRecipeById(recipeId),
             isFavorite = getFavorites().contains(recipeId.toString()),
+            recipeImage = imageDrawable(
+                STUB.getRecipeById(recipeId)?.imageUrl
+                    ?: throw IllegalArgumentException("Not image url provided")
+            ),
         )
     }
 
@@ -47,4 +54,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun getFavorites() = preferences.getFavorites()
+
+    private fun imageDrawable(imageUrl: String): Drawable? =
+        Drawable.createFromStream(context.assets?.open(imageUrl), null)
 }

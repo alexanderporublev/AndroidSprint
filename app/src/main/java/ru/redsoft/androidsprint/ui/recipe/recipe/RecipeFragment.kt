@@ -68,12 +68,8 @@ class RecipeFragment : Fragment() {
                 divider.dividerInsetStart = resources.getDimensionPixelSize(R.dimen.half_margin)
             }
         }
-        binding.headerImageView.setImageDrawable(
-            Drawable.createFromStream(
-                context?.assets?.open(state.recipe.imageUrl ?: throw Exception("No image url")),
-                null
-            )
-        )
+        binding.headerImageView.setImageDrawable(state.recipeImage)
+
         val ingredientsAdapter = IngredientsAdapter(state.recipe.ingredients)
         binding.rvIngredients.adapter = ingredientsAdapter
         binding.rvIngredients.addItemDecoration(divider)
