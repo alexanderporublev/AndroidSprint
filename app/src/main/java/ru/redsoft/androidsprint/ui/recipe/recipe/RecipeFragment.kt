@@ -67,17 +67,7 @@ class RecipeFragment : Fragment() {
             resources.getString(R.string.portions_count, state.portionsCount)
         ingredientsAdapter.updateIngredients(state.portionsCount)
 
-
         switchFavoriteIcon(state.isFavorite)
-        binding.addToFavoriteButton.setOnClickListener {
-            preferences.getFavorites().let { favorites ->
-                if (state.isFavorite)
-                    viewModel.saveFavorites(favorites - state.recipe.id.toString())
-                else
-                    viewModel.saveFavorites(favorites + state.recipe.id.toString())
-            }
-        }
-
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -114,6 +104,8 @@ class RecipeFragment : Fragment() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
         })
+
+        binding.addToFavoriteButton.setOnClickListener { viewModel.onFavoritesClicked() }
     }
 
 

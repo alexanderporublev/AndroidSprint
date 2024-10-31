@@ -58,6 +58,15 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         _uiState.value = _uiState.value?.copy(portionsCount = count)
     }
 
+    fun onFavoritesClicked() {
+        val favorites = getFavorites()
+        val currentRecipeId = _uiState.value?.recipe?.id.toString()
+        if (currentRecipeId.isNotEmpty() && favorites.contains(currentRecipeId))
+            saveFavorites(favorites - currentRecipeId)
+        else
+            saveFavorites(favorites + currentRecipeId)
+    }
+
     private fun imageDrawable(imageUrl: String): Drawable? =
         Drawable.createFromStream(context.assets?.open(imageUrl), null)
 }
