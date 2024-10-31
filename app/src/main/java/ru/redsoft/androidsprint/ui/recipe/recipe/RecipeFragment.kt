@@ -44,18 +44,44 @@ class RecipeFragment : Fragment() {
             recipeId = it.getInt(RecipesListFragment.ARG_RECIPE_ID)
         } ?: throw IllegalArgumentException("No arguments has been provided")
         initUI()
+        observeData()
         viewModel.loadRecipe(
             recipeId ?: throw IllegalArgumentException("No recipeid has been provided")
         )
     }
 
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private fun initUI() = viewModel.uiState.observe(viewLifecycleOwner) { state ->
+    private fun observeData() = viewModel.uiState.observe(viewLifecycleOwner) { state ->
         if (state.recipe == null)
             return@observe
         binding.recipeNameTextView.text = state.recipe.title
 
+
+        binding.headerImageView.setImageDrawable(state.recipeImage)
+
+        val ingredientsAdapter = IngredientsAdapter(state.recipe.ingredients)
+        binding.rvIngredients.adapter = ingredientsAdapter
+
+        binding.rvMethod.adapter = MethodAdapter(state.recipe.method)
+
+        binding.portionsCountTextView.text =
+            resources.getString(R.string.portions_count, state.portionsCount)
+        ingredientsAdapter.updateIngredients(state.portionsCount)
+
+
+        switchFavoriteIcon(state.isFavorite)
+        binding.addToFavoriteButton.setOnClickListener {
+            preferences.getFavorites().let { favorites ->
+                if (state.isFavorite)
+                    viewModel.saveFavorites(favorites - state.recipe.id.toString())
+                else
+                    viewModel.saveFavorites(favorites + state.recipe.id.toString())
+            }
+        }
+
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun initUI() {
         val divider = MaterialDividerItemDecoration(
             binding.rvIngredients.context,
             MaterialDividerItemDecoration.VERTICAL
@@ -68,13 +94,8 @@ class RecipeFragment : Fragment() {
                 divider.dividerInsetStart = resources.getDimensionPixelSize(R.dimen.half_margin)
             }
         }
-        binding.headerImageView.setImageDrawable(state.recipeImage)
 
-        val ingredientsAdapter = IngredientsAdapter(state.recipe.ingredients)
-        binding.rvIngredients.adapter = ingredientsAdapter
         binding.rvIngredients.addItemDecoration(divider)
-
-        binding.rvMethod.adapter = MethodAdapter(state.recipe.method)
         binding.rvMethod.addItemDecoration(divider)
 
         context?.resources?.let { resources ->
@@ -83,11 +104,6 @@ class RecipeFragment : Fragment() {
                 resources.getInteger(R.integer.min_portions_count)
             )
         }
-
-        binding.portionsCountTextView.text =
-            resources.getString(R.string.portions_count, state.portionsCount)
-        ingredientsAdapter.updateIngredients(state.portionsCount)
-
 
         binding.portionsCountSeekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -98,17 +114,6 @@ class RecipeFragment : Fragment() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
         })
-
-        switchFavoriteIcon(state.isFavorite)
-        binding.addToFavoriteButton.setOnClickListener {
-            preferences.getFavorites().let { favorites ->
-                if (state.isFavorite)
-                    viewModel.saveFavorites(favorites - state.recipe.id.toString())
-                else
-                    viewModel.saveFavorites(favorites + state.recipe.id.toString())
-            }
-        }
-
     }
 
 
