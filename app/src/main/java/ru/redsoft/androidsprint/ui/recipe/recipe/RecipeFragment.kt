@@ -19,16 +19,6 @@ import ru.redsoft.androidsprint.RecipesPreferences
 import ru.redsoft.androidsprint.databinding.FragmentRecipeBinding
 import ru.redsoft.androidsprint.model.Recipe
 
-class PortionSeekBarListener(val onChangeIngredients: (Int) -> Unit) : OnSeekBarChangeListener {
-    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-        onChangeIngredients(progress)
-    }
-
-    override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
-
-    override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
-}
-
 class RecipeFragment : Fragment() {
 
     private var recipeId: Int? = null
@@ -128,6 +118,14 @@ class RecipeFragment : Fragment() {
                 context?.theme
             )
         )
+}
 
+class PortionSeekBarListener(val onChangeIngredients: (Int) -> Unit) : OnSeekBarChangeListener {
+    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+        onChangeIngredients(progress)
+    }
 
+    override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+
+    override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
 }
