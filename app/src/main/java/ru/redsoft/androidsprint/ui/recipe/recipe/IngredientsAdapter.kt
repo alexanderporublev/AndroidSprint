@@ -7,10 +7,19 @@ import ru.redsoft.androidsprint.databinding.ItemIngredientBinding
 import ru.redsoft.androidsprint.model.Ingredient
 
 class IngredientsAdapter(
-    private val ingredientsList: List<Ingredient>,
-) :    RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
+    ingredientsList: List<Ingredient>,
+) : RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 
     private var portionsCount: Int = 1
+
+    var ingredientsList = ingredientsList
+        get() = field
+        set(data: List<Ingredient>) {
+            if (data == field)
+                return
+            field = data
+            notifyDataSetChanged()
+        }
 
     class ViewHolder(val binding: ItemIngredientBinding) : RecyclerView.ViewHolder(binding.root)
 
