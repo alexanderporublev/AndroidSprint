@@ -56,12 +56,10 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(id: Int) {
-        STUB.getRecipeById(id)?.let {
-            parentFragmentManager.commit {
-                val bundle = bundleOf(ARG_RECIPE_ID to it)
-                setReorderingAllowed(true)
-                replace<RecipeFragment>(R.id.fragmentContainerView, args = bundle)
-            }
+        parentFragmentManager.commit {
+            val bundle = bundleOf(ARG_RECIPE_ID to id)
+            setReorderingAllowed(true)
+            replace<RecipeFragment>(R.id.fragmentContainerView, args = bundle)
         }
     }
 }

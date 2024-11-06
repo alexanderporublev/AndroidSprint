@@ -22,6 +22,9 @@ import ru.redsoft.androidsprint.model.Recipe
 class RecipeFragment : Fragment() {
 
     private var recipeId: Int? = null
+    private val ingredientsAdapter = IngredientsAdapter(emptyList())
+    private val methodAdapter = MethodAdapter(emptyList())
+
     private val preferences: RecipesPreferences by lazy {
         RecipesPreferences(
             context ?: throw Exception("Not context")
@@ -58,10 +61,9 @@ class RecipeFragment : Fragment() {
 
         binding.headerImageView.setImageDrawable(state.recipeImage)
 
-        val ingredientsAdapter = IngredientsAdapter(state.recipe.ingredients)
-        binding.rvIngredients.adapter = ingredientsAdapter
 
-        binding.rvMethod.adapter = MethodAdapter(state.recipe.method)
+        ingredientsAdapter.ingredientsList = state.recipe.ingredients
+        methodAdapter.methodsList = state.recipe.method
 
         binding.portionsCountTextView.text =
             resources.getString(R.string.portions_count, state.portionsCount)
@@ -88,6 +90,9 @@ class RecipeFragment : Fragment() {
         binding.rvIngredients.addItemDecoration(divider)
         binding.rvMethod.addItemDecoration(divider)
 
+        binding.rvIngredients.adapter = ingredientsAdapter
+        binding.rvMethod.adapter = methodAdapter
+
         context?.resources?.let { resources ->
             binding.portionsCountTextView.text = resources.getString(
                 R.string.portions_count,
@@ -95,14 +100,10 @@ class RecipeFragment : Fragment() {
             )
         }
 
-        binding.portionsCountSeekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                viewModel.setPortionsCount(progress)
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
+        binding.portionsCountSeekBar.setOnSeekBarChangeListener(PortionSeekBarListener { progress: Int ->
+            viewModel.setPortionsCount(
+                progress
+            )
         })
 
         binding.addToFavoriteButton.setOnClickListener { viewModel.onFavoritesClicked() }
@@ -117,6 +118,14 @@ class RecipeFragment : Fragment() {
                 context?.theme
             )
         )
+}
 
+class PortionSeekBarListener(val onChangeIngredients: (Int) -> Unit) : OnSeekBarChangeListener {
+    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+        onChangeIngredients(progress)
+    }
 
+    override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+
+    override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
 }
