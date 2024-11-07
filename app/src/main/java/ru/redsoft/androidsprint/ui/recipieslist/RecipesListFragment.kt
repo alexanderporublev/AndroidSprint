@@ -2,6 +2,7 @@ package ru.redsoft.androidsprint.ui.recipieslist
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.databinding.FragmentRecipesListBinding
 import ru.redsoft.androidsprint.data.stubs.STUB
@@ -16,9 +18,13 @@ import ru.redsoft.androidsprint.ui.category.CategoriesListFragment
 import ru.redsoft.androidsprint.ui.recipe.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {
-    private var categoryId: Int? = null
-    private var categoryName: String? = null
-    private var categoryImageUrl: String? = null
+    private val recipesListAdapter = RecipesListAdapter(emptyList()).also { adapter ->
+        adapter.onItemClickCallback = {
+            openRecipeByRecipeId(it)
+        }
+    }
+
+    private val recipesListViewModel: RecipesListViewModel by viewModels()
 
     val binding: FragmentRecipesListBinding by lazy {
         FragmentRecipesListBinding.inflate(
@@ -34,30 +40,24 @@ class RecipesListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.rvRecipes.adapter = recipesListAdapter
+        observeState()
         arguments?.let {
-            categoryId = it.getInt(CategoriesListFragment.ARG_CATEGORY_ID)
-            categoryName = it.getString(CategoriesListFragment.ARG_CATEGORY_NAME)
-            categoryImageUrl = it.getString(CategoriesListFragment.ARG_CATEGORY_IMAGE_URL)
-        } ?: throw Exception("No arguments has been provided")
-        categoryImageUrl?.let { categoryImageUrl ->
-            val categoryImageDrawable = Drawable.createFromStream(
-                binding.root.context.getAssets().open(categoryImageUrl), null
+            recipesListViewModel.init(
+                it.getInt(CategoriesListFragment.ARG_CATEGORY_ID),
+                it.getString(CategoriesListFragment.ARG_CATEGORY_NAME) ?: "",
+                it.getString(CategoriesListFragment.ARG_CATEGORY_IMAGE_URL) ?: ""
             )
-            binding.headerImageView.setImageDrawable(categoryImageDrawable)
-            binding.headerImageView.contentDescription =
-                getString(R.string.category_recipes_image, categoryName)
-        }
-        binding.categoryNameTextView.text = categoryName ?: ""
-        initRecycler()
+        } ?: throw Exception("No arguments has been provided")
     }
 
-    private fun initRecycler() {
-        binding.rvRecipes.adapter =
-            RecipesListAdapter(STUB.getRecipesByCategoryId(categoryId ?: -1)).also { adapter ->
-                adapter.onItemClickCallback = {
-                    openRecipeByRecipeId(it)
-                }
-            }
+    private fun observeState() = recipesListViewModel.uiState.observe(viewLifecycleOwner) { state ->
+        binding.headerImageView.setImageDrawable(state.categoryImage)
+        binding.headerImageView.contentDescription =
+            getString(R.string.category_recipes_image, state.categoryName)
+        binding.categoryNameTextView.text = state.categoryName
+        recipesListAdapter.recipesList = state.recipesList
     }
 
     private fun openRecipeByRecipeId(id: Int) {
