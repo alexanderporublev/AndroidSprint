@@ -9,6 +9,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
 import ru.redsoft.androidsprint.databinding.FragmentCategoriesListBinding
@@ -48,15 +50,12 @@ class CategoriesListFragment : Fragment() {
 
     private fun openRecipesByCategoryId(id: Int) {
         viewModel.getCategoryById(id)?.let {
-            parentFragmentManager.commit {
-                val bundle = bundleOf(
-                    ARG_CATEGORY_ID to it.id,
-                    ARG_CATEGORY_NAME to it.title,
-                    ARG_CATEGORY_IMAGE_URL to it.imageUrl
-                )
-                setReorderingAllowed(true)
-                replace<RecipesListFragment>(R.id.fragmentContainerView, args = bundle)
-            }
+            val bundle = bundleOf(
+                ARG_CATEGORY_ID to it.id,
+                ARG_CATEGORY_NAME to it.title,
+                ARG_CATEGORY_IMAGE_URL to it.imageUrl
+            )
+            findNavController().navigate(R.id.recipesListFragment, bundle)
         }
     }
 
