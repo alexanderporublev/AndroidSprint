@@ -17,9 +17,8 @@ import ru.redsoft.androidsprint.databinding.FragmentCategoriesListBinding
 import ru.redsoft.androidsprint.data.stubs.STUB
 
 class CategoriesListFragment : Fragment() {
-    val categoryListAdapter = CategoriesListAdapter().also { adapter ->
-        adapter.onItemClickCallback = { openRecipesByCategoryId(it.id) }
-    }
+    val categoryListAdapter = CategoriesListAdapter()
+
     private val viewModel: CategoryListViewModel by viewModels()
     private val binding: FragmentCategoriesListBinding by lazy {
         FragmentCategoriesListBinding.inflate(layoutInflater)
@@ -41,6 +40,8 @@ class CategoriesListFragment : Fragment() {
     private fun onDataChanged() = viewModel.uiState.observe(viewLifecycleOwner) {
         categoryListAdapter.categoriesList =
             viewModel.uiState.value?.categoryList ?: emptyList()
+
+        categoryListAdapter.onItemClickCallback = { openRecipesByCategoryId(it.id) }
     }
 
     fun initRecycler() {
