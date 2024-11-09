@@ -1,6 +1,7 @@
 package ru.redsoft.androidsprint.ui.category
 
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,9 +9,17 @@ import ru.redsoft.androidsprint.databinding.ItemCategoryBinding
 import ru.redsoft.androidsprint.model.Category
 
 
-class CategoriesListAdapter(private val categoriesList: List<Category>) :
+class CategoriesListAdapter() :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
     var onItemClickCallback: ((Category) -> Unit)? = null
+    var categoriesList: List<Category> = emptyList()
+        get() = field
+        set(value){
+            if (field != value) {
+                field = value
+                notifyDataSetChanged()
+            }
+        }
 
     class ViewHolder(val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
         val categoryTitleView = binding.titleView
@@ -39,5 +48,4 @@ class CategoriesListAdapter(private val categoriesList: List<Category>) :
     }
 
     override fun getItemCount() = categoriesList.size
-
 }

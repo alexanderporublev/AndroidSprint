@@ -8,13 +8,17 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
 import ru.redsoft.androidsprint.databinding.FragmentCategoriesListBinding
 import ru.redsoft.androidsprint.data.stubs.STUB
 
 class CategoriesListFragment : Fragment() {
-
+    val categoryListAdapter = CategoriesListAdapter().also { adapter ->
+        adapter.onItemClickCallback = { openRecipesByCategoryId(it.id) }
+    }
+    private val viewModel: CategoryListViewModel by viewModels()
     private val binding: FragmentCategoriesListBinding by lazy {
         FragmentCategoriesListBinding.inflate(layoutInflater)
     }
@@ -29,17 +33,21 @@ class CategoriesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
+        onDataChanged()
+    }
+
+    private fun onDataChanged() = viewModel.uiState.observe(viewLifecycleOwner) {
+        categoryListAdapter.categoriesList =
+            viewModel.uiState.value?.categoryList ?: emptyList()
     }
 
     fun initRecycler() {
-        binding.rvCategories.adapter = CategoriesListAdapter(STUB.getCategories()).also { adapter ->
-            adapter.onItemClickCallback = { openRecipesByCategoryId(it.id) }
-        }
+        binding.rvCategories.adapter = categoryListAdapter
     }
 
-    private fun openRecipesByCategoryId(id: Int) {
 
-        STUB.getCategories().find { it.id == id }?.let {
+    private fun openRecipesByCategoryId(id: Int) {
+        viewModel.getCategoryById(id)?.let {
             parentFragmentManager.commit {
                 val bundle = bundleOf(
                     ARG_CATEGORY_ID to it.id,

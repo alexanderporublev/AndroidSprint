@@ -8,20 +8,20 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import ru.redsoft.androidsprint.R
-import ru.redsoft.androidsprint.RecipesPreferences
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment.Companion.ARG_RECIPE_ID
 import ru.redsoft.androidsprint.databinding.FragmentFavoritesBinding
-import ru.redsoft.androidsprint.data.stubs.STUB
 import ru.redsoft.androidsprint.ui.recipe.recipe.RecipeFragment
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListAdapter
 
 class FavoritesFragment : Fragment() {
-    private val preferences: RecipesPreferences by lazy {
-        RecipesPreferences(
-            context ?: throw Exception("Not activity")
-        )
+    private val recipesListAdapter = RecipesListAdapter(emptyList()).also { adapter ->
+        adapter.onItemClickCallback = {
+            openRecipeByRecipeId(it)
+        }
     }
+    private val favoritesViewModel: FavoritesViewModel by viewModels()
 
     private val binding: FragmentFavoritesBinding by lazy {
         FragmentFavoritesBinding.inflate(layoutInflater)
@@ -36,22 +36,20 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initUI()
+        binding.rvRecipes.adapter = recipesListAdapter
+        observeData()
+        favoritesViewModel.init()
     }
 
-    fun initUI() {
-        val favoriteRecipes =
-            STUB.getRecipeByIds(preferences.getFavorites().map { it.toInt() }.toSet())
-        if (favoriteRecipes.isEmpty()) {
+    fun observeData() = favoritesViewModel.uiState.observe(viewLifecycleOwner) { state ->
+
+        if (state.recipesList.isEmpty()) {
             binding.rvRecipes.visibility = View.GONE
             binding.emptyFavoritesPlaceHolder.visibility = View.VISIBLE
         } else {
             binding.rvRecipes.visibility = View.VISIBLE
             binding.emptyFavoritesPlaceHolder.visibility = View.GONE
-            binding.rvRecipes.adapter =
-                RecipesListAdapter(favoriteRecipes).also { adapter ->
-                    adapter.onItemClickCallback = { openRecipeByRecipeId(it) }
-                }
+            recipesListAdapter.recipesList = state.recipesList
         }
     }
 

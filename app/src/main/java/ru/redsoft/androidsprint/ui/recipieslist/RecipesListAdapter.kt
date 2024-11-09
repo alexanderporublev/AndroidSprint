@@ -8,9 +8,18 @@ import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.databinding.ItemRecipeBinding
 import ru.redsoft.androidsprint.model.Recipe
 
-class RecipesListAdapter (private val recipesList: List<Recipe>) :
+class RecipesListAdapter(recipesList: List<Recipe>) :
     RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {
     var onItemClickCallback: ((Int) -> Unit)? = null
+
+    var recipesList: List<Recipe> = recipesList
+        get() = field
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyDataSetChanged()
+            }
+        }
 
     class ViewHolder(val binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
         val recipeTitleView = binding.titleView
@@ -30,8 +39,9 @@ class RecipesListAdapter (private val recipesList: List<Recipe>) :
             context.getAssets().open(recipesList[position].imageUrl), null
         )
         viewHolder.imageView.setImageDrawable(recipeImageDrawable)
-        viewHolder.imageView.contentDescription = context.getString(R.string.recipe_image, recipesList[position].title)
-        viewHolder.binding.root.setOnClickListener{
+        viewHolder.imageView.contentDescription =
+            context.getString(R.string.recipe_image, recipesList[position].title)
+        viewHolder.binding.root.setOnClickListener {
             onItemClickCallback?.invoke(recipesList[position].id)
         }
     }
