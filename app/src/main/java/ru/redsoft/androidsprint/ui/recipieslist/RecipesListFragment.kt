@@ -62,7 +62,7 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(id: Int) {
-        findNavController().navigate(R.id.recipeFragment, bundleOf(ARG_RECIPE_ID to id))
+        findNavController().navigate(R.id.action_recipesListFragment_to_recipeFragment, bundleOf(ARG_RECIPE_ID to id))
     }
 
     companion object {

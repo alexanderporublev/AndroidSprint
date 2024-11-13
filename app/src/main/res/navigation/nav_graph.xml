@@ -9,7 +9,12 @@
         android:id="@+id/favoritesFragment"
         android:name="ru.redsoft.androidsprint.ui.recipe.favorite.FavoritesFragment"
         android:label="FavoritesFragment"
-        tools:layout="@layout/fragment_favorites"/>
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favoritesFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment"
+            app:launchSingleTop="true"/>
+    </fragment>
     <fragment
         android:id="@+id/recipeFragment"
         android:name="ru.redsoft.androidsprint.ui.recipe.recipe.RecipeFragment"
@@ -19,10 +24,20 @@
         android:id="@+id/recipesListFragment"
         android:name="ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment"
         android:label="RecipesListFragment"
-        tools:layout="@layout/fragment_recipes_list"/>
+        tools:layout="@layout/fragment_recipes_list">
+        <action
+            android:id="@+id/action_recipesListFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment"
+            app:launchSingleTop="true"/>
+    </fragment>
     <fragment
         android:id="@+id/categoriesListFragment"
         android:name="ru.redsoft.androidsprint.ui.category.CategoriesListFragment"
         android:label="fragment_categories_list"
-        tools:layout="@layout/fragment_categories_list" />
+        tools:layout="@layout/fragment_categories_list" >
+        <action
+            android:id="@+id/action_categoriesListFragment_to_recipesListFragment"
+            app:destination="@id/recipesListFragment"
+            app:launchSingleTop="true"/>
+    </fragment>
 </navigation>
