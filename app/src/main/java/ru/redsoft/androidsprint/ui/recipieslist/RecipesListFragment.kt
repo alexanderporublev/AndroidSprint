@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.databinding.FragmentRecipesListBinding
 import ru.redsoft.androidsprint.data.stubs.STUB
@@ -61,11 +62,7 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(id: Int) {
-        parentFragmentManager.commit {
-            val bundle = bundleOf(ARG_RECIPE_ID to id)
-            setReorderingAllowed(true)
-            replace<RecipeFragment>(R.id.fragmentContainerView, args = bundle)
-        }
+        findNavController().navigate(R.id.action_recipesListFragment_to_recipeFragment, bundleOf(ARG_RECIPE_ID to id))
     }
 
     companion object {

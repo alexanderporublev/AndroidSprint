@@ -7,6 +7,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import ru.redsoft.androidsprint.databinding.ActivityMainBinding
 import ru.redsoft.androidsprint.ui.category.CategoriesListFragment
 import ru.redsoft.androidsprint.ui.recipe.favorite.FavoritesFragment
@@ -25,26 +27,13 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                addToBackStack(null)
-                add<CategoriesListFragment>(R.id.fragmentContainerView)
-            }
-        }
 
         binding.categoryButton.setOnClickListener {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                replace<CategoriesListFragment>(R.id.fragmentContainerView)
-            }
+            findNavController(R.id.fragmentContainerView).navigate(R.id.categoriesListFragment)
         }
 
         binding.favoriteButton.setOnClickListener {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                replace<FavoritesFragment>(R.id.fragmentContainerView)
-            }
+            findNavController(R.id.fragmentContainerView).navigate(R.id.favoritesFragment)
         }
     }
 }

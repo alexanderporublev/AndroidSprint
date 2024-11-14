@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/categoriesListFragment">
+
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="ru.redsoft.androidsprint.ui.recipe.favorite.FavoritesFragment"
+        android:label="FavoritesFragment"
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favoritesFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment"
+            app:launchSingleTop="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/recipeFragment"
+        android:name="ru.redsoft.androidsprint.ui.recipe.recipe.RecipeFragment"
+        android:label="RecipeFragment"
+        tools:layout="@layout/fragment_recipe"/>
+    <fragment
+        android:id="@+id/recipesListFragment"
+        android:name="ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment"
+        android:label="RecipesListFragment"
+        tools:layout="@layout/fragment_recipes_list">
+        <action
+            android:id="@+id/action_recipesListFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment"
+            app:launchSingleTop="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/categoriesListFragment"
+        android:name="ru.redsoft.androidsprint.ui.category.CategoriesListFragment"
+        android:label="fragment_categories_list"
+        tools:layout="@layout/fragment_categories_list" >
+        <action
+            android:id="@+id/action_categoriesListFragment_to_recipesListFragment"
+            app:destination="@id/recipesListFragment"
+            app:launchSingleTop="true"/>
+    </fragment>
+</navigation>

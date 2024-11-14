@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment.Companion.ARG_RECIPE_ID
 import ru.redsoft.androidsprint.databinding.FragmentFavoritesBinding
@@ -54,10 +55,6 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(id: Int) {
-        parentFragmentManager.commit {
-            val bundle = bundleOf(ARG_RECIPE_ID to id)
-            setReorderingAllowed(true)
-            replace<RecipeFragment>(R.id.fragmentContainerView, args = bundle)
-        }
+        findNavController().navigate(R.id.action_favoritesFragment_to_recipeFragment, bundleOf(ARG_RECIPE_ID to id))
     }
 }
