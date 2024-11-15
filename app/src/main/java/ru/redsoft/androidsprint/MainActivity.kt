@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         binding.categoryButton.setOnClickListener {
             findNavController(R.id.fragmentContainerView).navigate(
                 R.id.categoriesListFragment,
+                null,
                 navOptions
             )
         }
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         binding.favoriteButton.setOnClickListener {
             findNavController(R.id.fragmentContainerView).navigate(
                 R.id.favoritesFragment,
+                null,
                 navOptions
             )
         }
