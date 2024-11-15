@@ -4,15 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.navOptions
 import ru.redsoft.androidsprint.databinding.ActivityMainBinding
-import ru.redsoft.androidsprint.ui.category.CategoriesListFragment
-import ru.redsoft.androidsprint.ui.recipe.favorite.FavoritesFragment
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
@@ -32,11 +26,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.categoryButton.setOnClickListener {
-            findNavController(R.id.fragmentContainerView).navigate(R.id.categoriesListFragment, navOptions)
+            findNavController(R.id.fragmentContainerView).navigate(
+                R.id.categoriesListFragment,
+                navOptions
+            )
         }
 
         binding.favoriteButton.setOnClickListener {
-            findNavController(R.id.fragmentContainerView).navigate(R.id.favoritesFragment, navOptions)
+            findNavController(R.id.fragmentContainerView).navigate(
+                R.id.favoritesFragment,
+                navOptions
+            )
         }
     }
 }
