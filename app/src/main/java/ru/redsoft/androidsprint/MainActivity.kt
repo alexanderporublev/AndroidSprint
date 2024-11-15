@@ -9,6 +9,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.navOptions
 import ru.redsoft.androidsprint.databinding.ActivityMainBinding
 import ru.redsoft.androidsprint.ui.category.CategoriesListFragment
 import ru.redsoft.androidsprint.ui.recipe.favorite.FavoritesFragment
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
+
+    private val navOptions = navOptions { launchSingleTop }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +32,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.categoryButton.setOnClickListener {
-            findNavController(R.id.fragmentContainerView).navigate(R.id.categoriesListFragment)
+            findNavController(R.id.fragmentContainerView).navigate(R.id.categoriesListFragment, navOptions)
         }
 
         binding.favoriteButton.setOnClickListener {
-            findNavController(R.id.fragmentContainerView).navigate(R.id.favoritesFragment)
+            findNavController(R.id.fragmentContainerView).navigate(R.id.favoritesFragment, navOptions)
         }
     }
 }
