@@ -6,13 +6,12 @@ import android.graphics.drawable.Drawable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import ru.redsoft.androidsprint.data.stubs.STUB
+import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
 
 data class RecipesListUiState(
-    val categoryId: Int = -1,
-    val categoryName: String = "",
+    val category: Category? = null,
     val categoryImage: Drawable? = null,
     val recipesList: List<Recipe> = emptyList()
 )
@@ -23,12 +22,11 @@ class RecipesListViewModel(application: Application) : AndroidViewModel(applicat
 
     var uiState: LiveData<RecipesListUiState> = _uiState
 
-    fun init(categoryId: Int, categoryName: String, categoryImageUrl: String) {
+    fun init(category: Category) {
         _uiState.value = _uiState.value?.copy(
-            categoryId = categoryId,
-            categoryName = categoryName,
-            categoryImage = Drawable.createFromStream(context.assets?.open(categoryImageUrl), null),
-            recipesList = STUB.getRecipesByCategoryId(categoryId)
+            category = category,
+            categoryImage = Drawable.createFromStream(context.assets?.open(category.imageUrl), null),
+            recipesList = STUB.getRecipesByCategoryId(category.id)
         )
     }
 }

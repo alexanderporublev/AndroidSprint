@@ -51,18 +51,9 @@ class CategoriesListFragment : Fragment() {
 
     private fun openRecipesByCategoryId(id: Int) {
         viewModel.getCategoryById(id)?.let {
-            val bundle = bundleOf(
-                ARG_CATEGORY_ID to it.id,
-                ARG_CATEGORY_NAME to it.title,
-                ARG_CATEGORY_IMAGE_URL to it.imageUrl
-            )
-            findNavController().navigate(R.id.action_categoriesListFragment_to_recipesListFragment, bundle)
-        }
+            val action = CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(it)
+            findNavController().navigate(action)
+        }?:throw IllegalArgumentException("No category with provided id $id")
     }
 
-    companion object {
-        const val ARG_CATEGORY_ID = "categoryId"
-        const val ARG_CATEGORY_NAME = "categoryName"
-        const val ARG_CATEGORY_IMAGE_URL = "categoryImageUrl"
-    }
 }

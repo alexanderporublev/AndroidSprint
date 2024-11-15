@@ -24,11 +24,7 @@ class RecipeFragment : Fragment() {
     private val ingredientsAdapter = IngredientsAdapter(emptyList())
     private val methodAdapter = MethodAdapter(emptyList())
     private val args: RecipeFragmentArgs by navArgs()
-    private val preferences: RecipesPreferences by lazy {
-        RecipesPreferences(
-            context ?: throw Exception("Not context")
-        )
-    }
+
     val binding: FragmentRecipeBinding by lazy { FragmentRecipeBinding.inflate(layoutInflater) }
 
     private val viewModel: RecipeViewModel by viewModels()

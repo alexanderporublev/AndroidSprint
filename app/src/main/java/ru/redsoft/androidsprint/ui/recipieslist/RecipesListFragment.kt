@@ -12,6 +12,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.databinding.FragmentRecipesListBinding
 import ru.redsoft.androidsprint.data.stubs.STUB
@@ -26,6 +27,7 @@ class RecipesListFragment : Fragment() {
     }
 
     private val recipesListViewModel: RecipesListViewModel by viewModels()
+    private val args: RecipesListFragmentArgs by navArgs()
 
     val binding: FragmentRecipesListBinding by lazy {
         FragmentRecipesListBinding.inflate(
@@ -44,20 +46,14 @@ class RecipesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvRecipes.adapter = recipesListAdapter
         observeState()
-        arguments?.let {
-            recipesListViewModel.init(
-                it.getInt(CategoriesListFragment.ARG_CATEGORY_ID),
-                it.getString(CategoriesListFragment.ARG_CATEGORY_NAME) ?: "",
-                it.getString(CategoriesListFragment.ARG_CATEGORY_IMAGE_URL) ?: ""
-            )
-        } ?: throw Exception("No arguments has been provided")
+        recipesListViewModel.init(args.category?:throw IllegalArgumentException("No category provided"))
     }
 
     private fun observeState() = recipesListViewModel.uiState.observe(viewLifecycleOwner) { state ->
         binding.headerImageView.setImageDrawable(state.categoryImage)
         binding.headerImageView.contentDescription =
-            getString(R.string.category_recipes_image, state.categoryName)
-        binding.categoryNameTextView.text = state.categoryName
+            getString(R.string.category_recipes_image, state.category?.title)
+        binding.categoryNameTextView.text = state.category?.title
         recipesListAdapter.recipesList = state.recipesList
     }
 
@@ -66,7 +62,4 @@ class RecipesListFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    companion object {
-        const val ARG_RECIPE_ID = "arg_recipe_id"
-    }
 }

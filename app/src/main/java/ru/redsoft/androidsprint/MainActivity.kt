@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val navOptions = navOptions { launchSingleTop }
+    private val navOptions = navOptions {launchSingleTop = true}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
