@@ -55,6 +55,7 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(id: Int) {
-        findNavController().navigate(R.id.action_favoritesFragment_to_recipeFragment, bundleOf(ARG_RECIPE_ID to id))
+        val action = FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(id)
+        findNavController().navigate(action)
     }
 }

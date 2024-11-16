@@ -12,6 +12,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
@@ -20,11 +21,9 @@ import ru.redsoft.androidsprint.databinding.FragmentRecipeBinding
 import ru.redsoft.androidsprint.model.Recipe
 
 class RecipeFragment : Fragment() {
-
-    private var recipeId: Int? = null
     private val ingredientsAdapter = IngredientsAdapter(emptyList())
     private val methodAdapter = MethodAdapter(emptyList())
-
+    private val args: RecipeFragmentArgs by navArgs()
     private val preferences: RecipesPreferences by lazy {
         RecipesPreferences(
             context ?: throw Exception("Not context")
@@ -43,14 +42,10 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.let {
-            recipeId = it.getInt(RecipesListFragment.ARG_RECIPE_ID)
-        } ?: throw IllegalArgumentException("No arguments has been provided")
+
         initUI()
         observeData()
-        viewModel.loadRecipe(
-            recipeId ?: throw IllegalArgumentException("No recipeid has been provided")
-        )
+        viewModel.loadRecipe( args.recipeId )
     }
 
     private fun observeData() = viewModel.uiState.observe(viewLifecycleOwner) { state ->
