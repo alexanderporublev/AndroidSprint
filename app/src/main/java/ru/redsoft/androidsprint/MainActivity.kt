@@ -34,15 +34,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val loggingInterceptor =
-        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor)
-        .build()
-
-    private val threadPool = Executors.newFixedThreadPool(10)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val view = binding.root
@@ -69,48 +60,6 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        Log.i(TAG, "OnCreate выполняется на потоке ${Thread.currentThread().name}")
-
-        threadPool.execute {
-            try {
-                Log.i(TAG, "Выполняю запрос на потоке ${Thread.currentThread().name}")
-                val urlCategories = URL("https://recipes.androidsprint.ru/api/category")
-                val categoriesRequest = Request.Builder().url(urlCategories).build()
-                client.newCall(categoriesRequest).execute().use { response ->
-                    val responseString = response.body?.string() ?: ""
-                    val categories = Json.decodeFromString<List<Category>>(responseString)
-                    Log.i(TAG, "Получено ${categories.size} категорий")
-                    categories.forEach { category ->
-                        threadPool.execute {
-                            try {
-                                val urlRecipes =
-                                    URL("https://recipes.androidsprint.ru/api/category/${category.id}/recipes")
-                                val recipesRequest = Request.Builder().url(urlRecipes).build()
-                                client.newCall(recipesRequest).execute().use { response ->
-                                    val responseString = response.body?.string() ?: ""
-                                    val recipes =
-                                        Json.decodeFromString<List<Recipe>>(responseString)
-                                    Log.i(
-                                        TAG, """
-                                Получен список рецептов категории ${category.title}:
-                                ${recipes.joinToString(", ") { it.title }}
-                            """.trimIndent()
-                                    )
-                                }
-                            } catch (e: ConnectException) {
-                                Log.e(TAG, "Couldn't connect to server")
-                            } catch (e: Exception) {
-                                Log.e(TAG, "Couldn't connect to server")
-                            }
-                        }
-                    }
-                }
-            } catch (e: ConnectException) {
-                Log.e(TAG, "Couldn't connect to server")
-            } catch (e: Exception) {
-                Log.e(TAG, "Couldn't connect to server")
-            }
-        }
     }
 
     companion object {

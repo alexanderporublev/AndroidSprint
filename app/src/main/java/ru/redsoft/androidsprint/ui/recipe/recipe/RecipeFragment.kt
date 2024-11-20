@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -19,6 +20,7 @@ import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
 import ru.redsoft.androidsprint.RecipesPreferences
 import ru.redsoft.androidsprint.databinding.FragmentRecipeBinding
 import ru.redsoft.androidsprint.model.Recipe
+import java.io.FileNotFoundException
 
 class RecipeFragment : Fragment() {
     private val ingredientsAdapter = IngredientsAdapter(emptyList())
@@ -41,12 +43,29 @@ class RecipeFragment : Fragment() {
 
         initUI()
         observeData()
-        viewModel.loadRecipe( args.recipeId )
+        try {
+            viewModel.loadRecipe( args.recipeId )
+        } catch (e: IllegalArgumentException) {
+            Toast.makeText(
+                activity?.applicationContext,
+                e.message,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
     }
 
     private fun observeData() = viewModel.uiState.observe(viewLifecycleOwner) { state ->
-        if (state.recipe == null)
+        if (state.hasError) {
+            Toast.makeText(
+                activity?.applicationContext,
+                "Ошибка чтения рецепта",
+                Toast.LENGTH_SHORT
+            ).show()
             return@observe
+        }
+        if (state.recipe == null)
+           return@observe
         binding.recipeNameTextView.text = state.recipe.title
 
 

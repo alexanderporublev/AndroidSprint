@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -14,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
 import ru.redsoft.androidsprint.databinding.FragmentCategoriesListBinding
-import ru.redsoft.androidsprint.data.stubs.STUB
 
 class CategoriesListFragment : Fragment() {
     val categoryListAdapter = CategoriesListAdapter()
@@ -37,7 +37,16 @@ class CategoriesListFragment : Fragment() {
         onDataChanged()
     }
 
-    private fun onDataChanged() = viewModel.uiState.observe(viewLifecycleOwner) {
+    private fun onDataChanged() = viewModel.uiState.observe(viewLifecycleOwner) { state ->
+        if (state.hasError) {
+            Toast.makeText(
+                activity?.applicationContext,
+                "Ошибка чтения категорий",
+                Toast.LENGTH_SHORT
+            ).show()
+            return@observe
+        }
+
         categoryListAdapter.categoriesList =
             viewModel.uiState.value?.categoryList ?: emptyList()
 

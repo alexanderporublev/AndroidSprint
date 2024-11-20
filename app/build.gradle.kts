@@ -57,6 +57,8 @@ dependencies {
     implementation(platform(libs.okhttp.bom))
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
+    implementation(libs.retrofit)
+    implementation(libs.kotlinx.serialization.converter)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
