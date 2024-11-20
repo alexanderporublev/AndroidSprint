@@ -53,7 +53,7 @@ class RecipesListFragment : Fragment() {
         if (state.hasError) {
             Toast.makeText(
                 activity?.applicationContext,
-                "Ошибка чтения списка рецептов",
+                getString(R.string.error_read_recipes_list),
                 Toast.LENGTH_SHORT
             ).show()
             return@observe

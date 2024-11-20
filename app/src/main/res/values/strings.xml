@@ -12,4 +12,9 @@
     <string name="add_recipe_to_favorite">Кнопка добавление рецепта в избранное</string>
     <string name="image_favorite">Изображение избранное</string>
     <string name="no_favorites_placeholder">Вы еще не добавили ни одного рецепта в избранное</string>
+    <string name="error_read_categories">Ошибка чтения категорий</string>
+    <string name="error_read_favorites">Ошибка чтения избранного</string>
+    <string name="error_read_recipe">Ошибка чтения рецепта</string>
+    <string name="could_not_load_image_message">Не удалось загрузить изображение</string>
+    <string name="error_read_recipes_list">Ошибка чтения списка рецептов</string>
 </resources>

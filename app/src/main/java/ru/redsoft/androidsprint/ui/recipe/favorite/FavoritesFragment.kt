@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.databinding.FragmentFavoritesBinding
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListAdapter
 
@@ -41,7 +42,7 @@ class FavoritesFragment : Fragment() {
         if (state.hasError) {
             Toast.makeText(
                 activity?.applicationContext,
-                "Ошибка чтения избранного",
+                getString(R.string.error_read_favorites),
                 Toast.LENGTH_SHORT
             ).show()
             return@observe

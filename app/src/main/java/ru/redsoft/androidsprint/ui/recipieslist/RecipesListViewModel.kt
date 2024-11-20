@@ -10,7 +10,7 @@ import kotlinx.coroutines.sync.Mutex
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
-import ru.redsoft.androidsprint.util.ThreadHelper
+import ru.redsoft.androidsprint.util.ThreadProvider
 
 data class RecipesListUiState(
     val category: Category? = null,
@@ -24,16 +24,14 @@ class RecipesListViewModel(application: Application) : AndroidViewModel(applicat
     private val context: Context by lazy { application.applicationContext }
 
     val uiState: LiveData<RecipesListUiState>
-        get() = synchronized(mutex) {
-            return _uiState
-        }
+        get() = _uiState
 
     private val recipesRepository = RecipesRepository.INSTANCE
     private val mutex = Mutex()
 
 
     fun init(category: Category) {
-        ThreadHelper.threadPool.execute {
+        ThreadProvider.threadPool.execute {
             val recipesList = recipesRepository.getRecipesByCategoryId(category.id)
             synchronized(mutex) {
                 _uiState.postValue(

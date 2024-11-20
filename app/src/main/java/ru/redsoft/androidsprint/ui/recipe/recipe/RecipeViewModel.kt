@@ -3,21 +3,15 @@ package ru.redsoft.androidsprint.ui.recipe.recipe
 import android.app.Application
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import ru.redsoft.androidsprint.RecipesPreferences
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Recipe
-import ru.redsoft.androidsprint.util.ThreadHelper
+import ru.redsoft.androidsprint.util.ThreadProvider
 import java.io.FileNotFoundException
-import java.lang.Error
 
 data class RecipeUiState(
     val recipe: Recipe? = null,
@@ -42,7 +36,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     private val mutex = Mutex()
 
     fun loadRecipe(recipeId: Int) {
-        ThreadHelper.threadPool.execute {
+        ThreadProvider.threadPool.execute {
             val recipe = recipesRepository.getRecipeById(recipeId)
 
             synchronized(mutex){
@@ -66,19 +60,15 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     fun saveFavorites(ids: Set<String>) {
         preferences.saveFavorites(ids)
-        synchronized(mutex) {
             _uiState.value = _uiState.value?.copy(
                 isFavorite = ids.contains(_uiState.value?.recipe?.id.toString()),
             )
-        }
     }
 
     fun getFavorites() = preferences.getFavorites()
 
     fun setPortionsCount(count: Int) {
-        synchronized(mutex) {
             _uiState.value = _uiState.value?.copy(portionsCount = count)
-        }
     }
 
     fun onFavoritesClicked() {

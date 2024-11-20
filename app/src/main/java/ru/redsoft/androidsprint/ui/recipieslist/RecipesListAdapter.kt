@@ -43,7 +43,8 @@ class RecipesListAdapter(recipesList: List<Recipe>) :
             )
             viewHolder.imageView.setImageDrawable(recipeImageDrawable)
         } catch (e: FileNotFoundException){
-            Toast.makeText(context, "Не удалось загрузить изображение", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,
+                context.getString(R.string.could_not_load_image_message), Toast.LENGTH_SHORT).show()
         }
         viewHolder.imageView.contentDescription =
             context.getString(R.string.recipe_image, recipesList[position].title)

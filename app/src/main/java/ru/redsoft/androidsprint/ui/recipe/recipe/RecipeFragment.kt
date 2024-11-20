@@ -59,7 +59,7 @@ class RecipeFragment : Fragment() {
         if (state.hasError) {
             Toast.makeText(
                 activity?.applicationContext,
-                "Ошибка чтения рецепта",
+                getString(R.string.error_read_recipe),
                 Toast.LENGTH_SHORT
             ).show()
             return@observe

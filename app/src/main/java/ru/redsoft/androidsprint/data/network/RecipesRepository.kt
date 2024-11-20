@@ -17,8 +17,8 @@ import ru.redsoft.androidsprint.model.Recipe
 class RecipesRepository private constructor() {
     private val retrofit =
         Retrofit.Builder()
-            .baseUrl("https://recipes.androidsprint.ru/api/")
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .baseUrl(RECIPE_API_BASE_URL)
+            .addConverterFactory(Json.asConverterFactory(CONTENT_TYPE.toMediaType()))
             .build()
 
     private val service = retrofit.create(RecipeApiService::class.java)
@@ -26,7 +26,7 @@ class RecipesRepository private constructor() {
     fun getRecipeById(id: Int): Recipe? {
         try {
             val response = service.getRecipeById(id).execute()
-            return response.body()//?:throw IllegalArgumentException("No recipe with id=${id}")
+            return response.body()
         } catch (e: Exception) {
             Log.e(TAG, connectionErrorMessage)
             return null
@@ -37,7 +37,7 @@ class RecipesRepository private constructor() {
         val query = ids.joinToString(",")
         try {
             val response = service.getRecipesByIdList(query).execute()
-            return response.body()//?:throw IllegalArgumentException("No any recipes with provided ids={$query}")
+            return response.body()
         } catch (e: Exception) {
             Log.e(TAG, connectionErrorMessage)
             return null
@@ -47,7 +47,7 @@ class RecipesRepository private constructor() {
     fun getCategoryById(id: Int): Category? {
         try {
             val response = service.getCategoryById(id).execute()
-            return response.body()//?:throw IllegalArgumentException("No category with id=${id}")
+            return response.body()
         } catch (e: Exception) {
             Log.e(TAG, connectionErrorMessage)
             return null
@@ -57,7 +57,7 @@ class RecipesRepository private constructor() {
     fun getRecipesByCategoryId(id: Int): List<Recipe>? {
         try {
         val response = service.getRecipesByCategoryId(id).execute()
-        return response.body()//?:throw IllegalArgumentException("No category with id=${id}")
+        return response.body()
         } catch (e: Exception) {
             Log.e(TAG, connectionErrorMessage)
             return null
@@ -67,7 +67,7 @@ class RecipesRepository private constructor() {
     fun getAllCategories(): List<Category>? {
         try {
             val response = service.getAllCategories().execute()
-            return response.body()//?:throw IllegalArgumentException("No any categories")
+            return response.body()
         } catch (e: Exception) {
             Log.e(TAG, connectionErrorMessage)
             return null
@@ -79,5 +79,7 @@ class RecipesRepository private constructor() {
         val INSTANCE: RecipesRepository by lazy { RecipesRepository() }
         val TAG = "RecipesRepository"
         val connectionErrorMessage = "Не удалось подключиться к серверу"
+        val RECIPE_API_BASE_URL = "https://recipes.androidsprint.ru/api/"
+        val CONTENT_TYPE = "application/json"
     }
 }
