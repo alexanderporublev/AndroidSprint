@@ -3,10 +3,12 @@ package ru.redsoft.androidsprint.ui.recipieslist
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.databinding.ItemRecipeBinding
 import ru.redsoft.androidsprint.model.Recipe
+import java.io.FileNotFoundException
 
 class RecipesListAdapter(recipesList: List<Recipe>) :
     RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {
@@ -35,10 +37,15 @@ class RecipesListAdapter(recipesList: List<Recipe>) :
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.recipeTitleView.text = recipesList[position].title
         val context = viewHolder.binding.root.context
-        val recipeImageDrawable = Drawable.createFromStream(
-            context.getAssets().open(recipesList[position].imageUrl), null
-        )
-        viewHolder.imageView.setImageDrawable(recipeImageDrawable)
+        try {
+            val recipeImageDrawable = Drawable.createFromStream(
+                context.getAssets().open(recipesList[position].imageUrl), null
+            )
+            viewHolder.imageView.setImageDrawable(recipeImageDrawable)
+        } catch (e: FileNotFoundException){
+            Toast.makeText(context,
+                context.getString(R.string.could_not_load_image_message), Toast.LENGTH_SHORT).show()
+        }
         viewHolder.imageView.contentDescription =
             context.getString(R.string.recipe_image, recipesList[position].title)
         viewHolder.binding.root.setOnClickListener {

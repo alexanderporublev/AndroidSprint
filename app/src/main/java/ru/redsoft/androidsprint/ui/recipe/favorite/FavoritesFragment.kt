@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.databinding.FragmentFavoritesBinding
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListAdapter
 
@@ -37,7 +39,14 @@ class FavoritesFragment : Fragment() {
     }
 
     fun observeData() = favoritesViewModel.uiState.observe(viewLifecycleOwner) { state ->
-
+        if (state.hasError) {
+            Toast.makeText(
+                activity?.applicationContext,
+                getString(R.string.error_read_favorites),
+                Toast.LENGTH_SHORT
+            ).show()
+            return@observe
+        }
         if (state.recipesList.isEmpty()) {
             binding.rvRecipes.visibility = View.GONE
             binding.emptyFavoritesPlaceHolder.visibility = View.VISIBLE
@@ -46,6 +55,7 @@ class FavoritesFragment : Fragment() {
             binding.emptyFavoritesPlaceHolder.visibility = View.GONE
             recipesListAdapter.recipesList = state.recipesList
         }
+
     }
 
     private fun openRecipeByRecipeId(id: Int) {

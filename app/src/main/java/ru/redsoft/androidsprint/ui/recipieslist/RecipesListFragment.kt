@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -15,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.databinding.FragmentRecipesListBinding
-import ru.redsoft.androidsprint.data.stubs.STUB
 import ru.redsoft.androidsprint.ui.category.CategoriesListFragment
 import ru.redsoft.androidsprint.ui.recipe.recipe.RecipeFragment
 
@@ -50,6 +50,14 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun observeState() = recipesListViewModel.uiState.observe(viewLifecycleOwner) { state ->
+        if (state.hasError) {
+            Toast.makeText(
+                activity?.applicationContext,
+                getString(R.string.error_read_recipes_list),
+                Toast.LENGTH_SHORT
+            ).show()
+            return@observe
+        }
         binding.headerImageView.setImageDrawable(state.categoryImage)
         binding.headerImageView.contentDescription =
             getString(R.string.category_recipes_image, state.category?.title)

@@ -38,7 +38,11 @@ class IngredientsAdapter(
         val quantity = try {
             "${ingredientsList[position].quantity.toInt() * portionsCount}"
         } catch (e: NumberFormatException) {
-            "%.1f".format(ingredientsList[position].quantity.toFloat() * portionsCount)
+            try {
+                "%.1f".format(ingredientsList[position].quantity.toFloat() * portionsCount)
+            } catch (e: NumberFormatException) {
+                ingredientsList[position].quantity
+            }
         }
 
         viewHolder.binding.ingredientCountTextView.text =
