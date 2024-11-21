@@ -17,7 +17,6 @@ data class RecipeUiState(
     val recipe: Recipe? = null,
     val portionsCount: Int = 1,
     val isFavorite: Boolean = false,
-    val recipeImage: Drawable? = null,
     val hasError: Boolean = false,
 )
 
@@ -44,14 +43,6 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
                     _uiState.value?.copy(
                         recipe = recipe,
                         isFavorite = getFavorites().contains(recipeId.toString()),
-                        recipeImage = try {
-                            imageDrawable(
-                                recipe?.imageUrl
-                                    ?: throw IllegalArgumentException("Not image url provided")
-                            )
-                        } catch (e: FileNotFoundException) {
-                            null
-                        },
                     )
                 )
             }

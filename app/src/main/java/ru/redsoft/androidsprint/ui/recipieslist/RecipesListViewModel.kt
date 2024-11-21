@@ -14,7 +14,6 @@ import ru.redsoft.androidsprint.util.ThreadProvider
 
 data class RecipesListUiState(
     val category: Category? = null,
-    val categoryImage: Drawable? = null,
     val recipesList: List<Recipe> = emptyList(),
     val hasError: Boolean = false,
 )
@@ -37,10 +36,6 @@ class RecipesListViewModel(application: Application) : AndroidViewModel(applicat
                 _uiState.postValue(
                     _uiState.value?.copy(
                         category = category,
-                        categoryImage = Drawable.createFromStream(
-                            context.assets?.open(category.imageUrl),
-                            null
-                        ),
                         recipesList = recipesList ?: emptyList(),
                         hasError = recipesList == null,
                     )

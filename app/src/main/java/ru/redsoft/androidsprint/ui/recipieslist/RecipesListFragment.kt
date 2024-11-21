@@ -15,9 +15,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.redsoft.androidsprint.R
+import ru.redsoft.androidsprint.data.network.ImageDownloadService
 import ru.redsoft.androidsprint.databinding.FragmentRecipesListBinding
 import ru.redsoft.androidsprint.ui.category.CategoriesListFragment
 import ru.redsoft.androidsprint.ui.recipe.recipe.RecipeFragment
+import java.lang.IllegalStateException
 
 class RecipesListFragment : Fragment() {
     private val recipesListAdapter = RecipesListAdapter(emptyList()).also { adapter ->
@@ -46,7 +48,9 @@ class RecipesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvRecipes.adapter = recipesListAdapter
         observeState()
-        recipesListViewModel.init(args.category?:throw IllegalArgumentException("No category provided"))
+        recipesListViewModel.init(
+            args.category ?: throw IllegalArgumentException("No category provided")
+        )
     }
 
     private fun observeState() = recipesListViewModel.uiState.observe(viewLifecycleOwner) { state ->
@@ -58,7 +62,11 @@ class RecipesListFragment : Fragment() {
             ).show()
             return@observe
         }
-        binding.headerImageView.setImageDrawable(state.categoryImage)
+        ImageDownloadService.INSTANCE.loadImage(
+            state.category?.imageUrl ?: "",
+            context ?: throw IllegalStateException("No context"),
+            binding.headerImageView
+        )
         binding.headerImageView.contentDescription =
             getString(R.string.category_recipes_image, state.category?.title)
         binding.categoryNameTextView.text = state.category?.title
