@@ -3,10 +3,11 @@ package ru.redsoft.androidsprint.ui.category
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Category
-import ru.redsoft.androidsprint.util.ThreadProvider
 
 data class CategoryListUiState(
     val categoryList: List<Category> = emptyList(),
@@ -22,14 +23,17 @@ class CategoryListViewModel : ViewModel() {
     private val mutex = Mutex()
 
     fun init() {
-        ThreadProvider.threadPool.execute {
-                val categories = recipesRepository.getAllCategories()
+        viewModelScope.launch {
+            val categories = recipesRepository.getAllCategories()
             synchronized(mutex) {
-                    _uiState.postValue(_uiState.value?.copy(
+                _uiState.postValue(
+                    _uiState.value?.copy(
                         categoryList = categories ?: emptyList(),
                         hasError = categories == null
-                    ))
+                    )
+                )
             }
         }
     }
+
 }

@@ -6,11 +6,12 @@ import android.graphics.drawable.Drawable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
-import ru.redsoft.androidsprint.util.ThreadProvider
 
 data class RecipesListUiState(
     val category: Category? = null,
@@ -30,7 +31,7 @@ class RecipesListViewModel(application: Application) : AndroidViewModel(applicat
 
 
     fun init(category: Category) {
-        ThreadProvider.threadPool.execute {
+        viewModelScope.launch{
             val recipesList = recipesRepository.getRecipesByCategoryId(category.id)
             synchronized(mutex) {
                 _uiState.postValue(
