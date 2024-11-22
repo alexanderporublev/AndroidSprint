@@ -18,9 +18,11 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
 import ru.redsoft.androidsprint.RecipesPreferences
+import ru.redsoft.androidsprint.data.network.ImageDownloadService
 import ru.redsoft.androidsprint.databinding.FragmentRecipeBinding
 import ru.redsoft.androidsprint.model.Recipe
 import java.io.FileNotFoundException
+import java.lang.IllegalStateException
 
 class RecipeFragment : Fragment() {
     private val ingredientsAdapter = IngredientsAdapter(emptyList())
@@ -68,9 +70,7 @@ class RecipeFragment : Fragment() {
            return@observe
         binding.recipeNameTextView.text = state.recipe.title
 
-
-        binding.headerImageView.setImageDrawable(state.recipeImage)
-
+        ImageDownloadService.INSTANCE.loadImage(state.recipe.imageUrl, context?:throw IllegalStateException("Not any activity"), binding.headerImageView)
 
         ingredientsAdapter.ingredientsList = state.recipe.ingredients
         methodAdapter.methodsList = state.recipe.method

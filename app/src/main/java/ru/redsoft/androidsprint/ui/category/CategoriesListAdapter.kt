@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.redsoft.androidsprint.data.network.ImageDownloadService
 import ru.redsoft.androidsprint.databinding.ItemCategoryBinding
 import ru.redsoft.androidsprint.model.Category
 
@@ -14,7 +15,7 @@ class CategoriesListAdapter() :
     var onItemClickCallback: ((Category) -> Unit)? = null
     var categoriesList: List<Category> = emptyList()
         get() = field
-        set(value){
+        set(value) {
             if (field != value) {
                 field = value
                 notifyDataSetChanged()
@@ -38,11 +39,13 @@ class CategoriesListAdapter() :
         viewHolder.categoryTitleView.text = categoriesList[position].title
         viewHolder.descriptionView.text = categoriesList[position].description
 
-        val categoryImageDrawable = Drawable.createFromStream(
-            viewHolder.binding.root.context.getAssets().open(categoriesList[position].imageUrl), null
+
+        ImageDownloadService.INSTANCE.loadImage(
+            categoriesList[position].imageUrl,
+            viewHolder.binding.root.context,
+            viewHolder.imageView
         )
-        viewHolder.imageView.setImageDrawable(categoryImageDrawable)
-        viewHolder.binding.root.setOnClickListener{
+        viewHolder.binding.root.setOnClickListener {
             onItemClickCallback?.invoke(categoriesList[position])
         }
     }
