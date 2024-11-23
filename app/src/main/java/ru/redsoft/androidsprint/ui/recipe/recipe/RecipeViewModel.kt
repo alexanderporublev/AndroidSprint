@@ -6,12 +6,12 @@ import android.graphics.drawable.Drawable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import ru.redsoft.androidsprint.RecipesPreferences
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Recipe
-import ru.redsoft.androidsprint.util.ThreadProvider
-import java.io.FileNotFoundException
 
 data class RecipeUiState(
     val recipe: Recipe? = null,
@@ -35,7 +35,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     private val mutex = Mutex()
 
     fun loadRecipe(recipeId: Int) {
-        ThreadProvider.threadPool.execute {
+        viewModelScope.launch {
             val recipe = recipesRepository.getRecipeById(recipeId)
 
             synchronized(mutex){

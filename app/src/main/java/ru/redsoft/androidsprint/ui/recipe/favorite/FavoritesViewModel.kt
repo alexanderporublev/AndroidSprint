@@ -4,11 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import ru.redsoft.androidsprint.RecipesPreferences
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Recipe
-import ru.redsoft.androidsprint.util.ThreadProvider
 
 data class FavoritesUiState(
     val recipesList: List<Recipe> = emptyList(),
@@ -25,7 +26,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     private val mutex = Mutex()
 
     fun init() {
-        ThreadProvider.threadPool.execute {
+        viewModelScope.launch {
             val ids = preferences.getFavorites().map { it.toInt() }.toSet()
             val favorites = if (ids.isNotEmpty()) {
                 recipesRepository.getRecipesByIds(

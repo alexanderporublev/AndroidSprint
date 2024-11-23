@@ -3,6 +3,8 @@ package ru.redsoft.androidsprint.data.network
 import android.content.Context
 import android.util.Log
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Response
@@ -15,6 +17,7 @@ import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
 
 class RecipesRepository private constructor() {
+    private val dispatcherIO = Dispatchers.IO
     private val retrofit =
         Retrofit.Builder()
             .baseUrl(RECIPE_API_BASE_URL)
@@ -23,54 +26,56 @@ class RecipesRepository private constructor() {
 
     private val service = retrofit.create(RecipeApiService::class.java)
 
-    fun getRecipeById(id: Int): Recipe? {
-        try {
-            val response = service.getRecipeById(id).execute()
-            return response.body()
-        } catch (e: Exception) {
-            Log.e(TAG, connectionErrorMessage)
-            return null
+    suspend fun getRecipeById(id: Int): Recipe? = withContext(dispatcherIO) {
+            try {
+                val response = service.getRecipeById(id).execute()
+                response.body()
+            } catch (e: Exception) {
+                Log.e(TAG, connectionErrorMessage)
+                null
+            }
         }
-    }
 
-    fun getRecipesByIds(ids: Set<Int>): List<Recipe>? {
+
+    suspend fun getRecipesByIds(ids: Set<Int>): List<Recipe>? = withContext(dispatcherIO) {
         val query = ids.joinToString(",")
-        try {
-            val response = service.getRecipesByIdList(query).execute()
-            return response.body()
-        } catch (e: Exception) {
-            Log.e(TAG, connectionErrorMessage)
-            return null
+            try {
+                val response = service.getRecipesByIdList(query).execute()
+                response.body()
+            } catch (e: Exception) {
+                Log.e(TAG, connectionErrorMessage)
+                null
+            }
         }
-    }
 
-    fun getCategoryById(id: Int): Category? {
+
+    suspend fun getCategoryById(id: Int): Category? = withContext(dispatcherIO) {
         try {
             val response = service.getCategoryById(id).execute()
-            return response.body()
+            response.body()
         } catch (e: Exception) {
             Log.e(TAG, connectionErrorMessage)
-            return null
+            null
         }
     }
 
-    fun getRecipesByCategoryId(id: Int): List<Recipe>? {
+    suspend fun getRecipesByCategoryId(id: Int): List<Recipe>? = withContext(dispatcherIO) {
         try {
         val response = service.getRecipesByCategoryId(id).execute()
-        return response.body()
+        response.body()
         } catch (e: Exception) {
             Log.e(TAG, connectionErrorMessage)
-            return null
+            null
         }
     }
 
-    fun getAllCategories(): List<Category>? {
+    suspend fun getAllCategories(): List<Category>? = withContext(dispatcherIO){
         try {
             val response = service.getAllCategories().execute()
-            return response.body()
+            response.body()
         } catch (e: Exception) {
-            Log.e(TAG, connectionErrorMessage)
-            return null
+            Log.e(TAG, e.stackTraceToString())
+            null
         }
     }
 
