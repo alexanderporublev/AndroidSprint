@@ -1,20 +1,18 @@
 package ru.redsoft.androidsprint.data.network
 
-import android.content.Context
 import android.util.Log
+import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import ru.redsoft.androidsprint.R
+import ru.redsoft.androidsprint.data.local.AppDatabase
+import ru.redsoft.androidsprint.dependency
 import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
+import java.lang.IllegalStateException
 
 class RecipesRepository private constructor() {
     private val dispatcherIO = Dispatchers.IO
@@ -78,6 +76,19 @@ class RecipesRepository private constructor() {
             null
         }
     }
+
+    suspend fun getCategoriesFromCache(): List<Category> = withContext(dispatcherIO) {
+        db.categoriesDao().getAllCategories()
+    }
+
+    suspend fun addCategoryToCache(category: Category) =  withContext(dispatcherIO) {
+        db.categoriesDao().insertCategory(category)
+    }
+
+    private val db = Room.databaseBuilder(
+        dependency.context?:throw IllegalStateException("Not any context provided"),
+        AppDatabase::class.java, "recipe_db"
+    ).build()
 
 
     companion object {

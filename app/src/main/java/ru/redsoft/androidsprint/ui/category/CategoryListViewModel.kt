@@ -24,11 +24,16 @@ class CategoryListViewModel : ViewModel() {
 
     fun init() {
         viewModelScope.launch {
+            val cache = recipesRepository.getCategoriesFromCache().toMutableList()
             val categories = recipesRepository.getAllCategories()
+            categories?.forEach {
+                cache += it
+                recipesRepository.addCategoryToCache(it)
+            }
             synchronized(mutex) {
                 _uiState.postValue(
                     _uiState.value?.copy(
-                        categoryList = categories ?: emptyList(),
+                        categoryList = cache ?: emptyList(),
                         hasError = categories == null
                     )
                 )
