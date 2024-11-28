@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
+import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.databinding.ActivityMainBinding
 import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        dependency.context = applicationContext
         super.onCreate(savedInstanceState)
         val view = binding.root
         setContentView(view)
