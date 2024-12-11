@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Category
 
@@ -19,7 +20,8 @@ class CategoryListViewModel : ViewModel() {
     val uiState: LiveData<CategoryListUiState>
         get() =  _uiState
 
-    private val recipesRepository = RecipesRepository.INSTANCE
+    private val recipesRepository =
+        RecipesRepository.getInstance() ?: throw IllegalStateException("Couldn't create repository")
     private val mutex = Mutex()
 
     fun init() {
@@ -30,10 +32,10 @@ class CategoryListViewModel : ViewModel() {
                 cache += it
                 recipesRepository.addCategoryToCache(it)
             }
-            synchronized(mutex) {
+            mutex.withLock {
                 _uiState.postValue(
                     _uiState.value?.copy(
-                        categoryList = cache ?: emptyList(),
+                        categoryList = cache,
                         hasError = categories == null
                     )
                 )

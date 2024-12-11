@@ -46,7 +46,6 @@ class CategoriesListFragment : Fragment() {
                 getString(R.string.error_read_categories),
                 Toast.LENGTH_SHORT
             ).show()
-            return@observe
         }
 
         categoryListAdapter.categoriesList =
