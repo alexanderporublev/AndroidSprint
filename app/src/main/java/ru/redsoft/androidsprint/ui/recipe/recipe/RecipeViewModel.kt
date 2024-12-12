@@ -31,14 +31,15 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         )
     }
 
-    private val recipesRepository = RecipesRepository.INSTANCE
+    private val recipesRepository =
+        RecipesRepository.getInstance() ?: throw IllegalStateException("Couldn't create repository")
     private val mutex = Mutex()
 
     fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
             val recipe = recipesRepository.getRecipeById(recipeId)
 
-            synchronized(mutex){
+            synchronized(mutex) {
                 _uiState.postValue(
                     _uiState.value?.copy(
                         recipe = recipe,
@@ -51,15 +52,15 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     fun saveFavorites(ids: Set<String>) {
         preferences.saveFavorites(ids)
-            _uiState.value = _uiState.value?.copy(
-                isFavorite = ids.contains(_uiState.value?.recipe?.id.toString()),
-            )
+        _uiState.value = _uiState.value?.copy(
+            isFavorite = ids.contains(_uiState.value?.recipe?.id.toString()),
+        )
     }
 
     fun getFavorites() = preferences.getFavorites()
 
     fun setPortionsCount(count: Int) {
-            _uiState.value = _uiState.value?.copy(portionsCount = count)
+        _uiState.value = _uiState.value?.copy(portionsCount = count)
     }
 
     fun onFavoritesClicked() {

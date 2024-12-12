@@ -26,12 +26,13 @@ class RecipesListViewModel(application: Application) : AndroidViewModel(applicat
     val uiState: LiveData<RecipesListUiState>
         get() = _uiState
 
-    private val recipesRepository = RecipesRepository.INSTANCE
+    private val recipesRepository =
+        RecipesRepository.getInstance() ?: throw IllegalStateException("Couldn't create repository")
     private val mutex = Mutex()
 
 
     fun init(category: Category) {
-        viewModelScope.launch{
+        viewModelScope.launch {
             val recipesList = recipesRepository.getRecipesByCategoryId(category.id)
             synchronized(mutex) {
                 _uiState.postValue(

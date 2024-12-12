@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Category
 
@@ -17,22 +18,34 @@ data class CategoryListUiState(
 class CategoryListViewModel : ViewModel() {
     private val _uiState = MutableLiveData(CategoryListUiState())
     val uiState: LiveData<CategoryListUiState>
-        get() =  _uiState
+        get() = _uiState
 
-    private val recipesRepository = RecipesRepository.INSTANCE
+    private val recipesRepository =
+        RecipesRepository.getInstance() ?: throw IllegalStateException("Couldn't create repository")
     private val mutex = Mutex()
 
     fun init() {
         viewModelScope.launch {
-            val categories = recipesRepository.getAllCategories()
-            synchronized(mutex) {
-                _uiState.postValue(
-                    _uiState.value?.copy(
-                        categoryList = categories ?: emptyList(),
-                        hasError = categories == null
-                    )
-                )
+            val cache = mutex.withLock {
+                recipesRepository.getCategoriesFromCache().toMutableList()
             }
+            val categories = mutex.withLock {
+                recipesRepository.getAllCategories()
+            }
+            categories?.let {
+                cache.clear()
+                it.forEach {
+                    cache += it
+                    recipesRepository.addCategoryToCache(it)
+                }
+            }
+
+            _uiState.postValue(
+                _uiState.value?.copy(
+                    categoryList = cache,
+                    hasError = cache.isEmpty()
+                )
+            )
         }
     }
 
