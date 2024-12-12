@@ -18,7 +18,7 @@ data class CategoryListUiState(
 class CategoryListViewModel : ViewModel() {
     private val _uiState = MutableLiveData(CategoryListUiState())
     val uiState: LiveData<CategoryListUiState>
-        get() =  _uiState
+        get() = _uiState
 
     private val recipesRepository =
         RecipesRepository.getInstance() ?: throw IllegalStateException("Couldn't create repository")
@@ -26,20 +26,26 @@ class CategoryListViewModel : ViewModel() {
 
     fun init() {
         viewModelScope.launch {
-            val cache = recipesRepository.getCategoriesFromCache().toMutableList()
-            val categories = recipesRepository.getAllCategories()
-            categories?.forEach {
-                cache += it
-                recipesRepository.addCategoryToCache(it)
+            val cache = mutex.withLock {
+                recipesRepository.getCategoriesFromCache().toMutableList()
             }
-            mutex.withLock {
-                _uiState.postValue(
-                    _uiState.value?.copy(
-                        categoryList = cache,
-                        hasError = categories == null
-                    )
+            val categories = mutex.withLock {
+                recipesRepository.getAllCategories()
+            }
+            categories?.let {
+                cache.clear()
+                it.forEach {
+                    cache += it
+                    recipesRepository.addCategoryToCache(it)
+                }
+            }
+
+            _uiState.postValue(
+                _uiState.value?.copy(
+                    categoryList = cache,
+                    hasError = cache.isEmpty()
                 )
-            }
+            )
         }
     }
 
