@@ -2,21 +2,20 @@ package ru.redsoft.androidsprint.data.network
 
 import android.content.Context
 import android.util.Log
+import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import ru.redsoft.androidsprint.R
+import ru.redsoft.androidsprint.data.local.AppDatabase
 import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
+import java.net.UnknownHostException
+import kotlin.IllegalStateException
 
-class RecipesRepository private constructor() {
+class RecipesRepository private constructor(val context: Context) {
     private val dispatcherIO = Dispatchers.IO
     private val retrofit =
         Retrofit.Builder()
@@ -73,15 +72,40 @@ class RecipesRepository private constructor() {
         try {
             val response = service.getAllCategories().execute()
             response.body()
-        } catch (e: Exception) {
-            Log.e(TAG, e.stackTraceToString())
+        }
+        catch (e: Exception) {
+            Log.e(TAG, "print" + e.stackTraceToString())
             null
         }
     }
 
+    suspend fun getCategoriesFromCache(): List<Category> = withContext(dispatcherIO) {
+        db.categoriesDao().getAllCategories()
+    }
+
+    suspend fun addCategoryToCache(category: Category) =  withContext(dispatcherIO) {
+        Log.d(TAG, "ADD")
+        db.categoriesDao().insertCategory(category)
+
+    }
+
+    private val db = Room.databaseBuilder(
+        context,
+        AppDatabase::class.java, "recipe_db"
+    ).build()
+
 
     companion object {
-        val INSTANCE: RecipesRepository by lazy { RecipesRepository() }
+        fun getInstance(context: Context? = null): RecipesRepository?{
+            if (INSTANCE != null)
+                return INSTANCE
+            if (context != null){
+                INSTANCE = RecipesRepository(context)
+                return INSTANCE
+            }
+            throw IllegalStateException("Instance didn't created")
+        }
+        private var INSTANCE: RecipesRepository? = null
         val TAG = "RecipesRepository"
         val connectionErrorMessage = "Не удалось подключиться к серверу"
         val RECIPE_API_BASE_URL = "https://recipes.androidsprint.ru/api/"

@@ -22,7 +22,8 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
         get() = _uiState
 
     val preferences: RecipesPreferences by lazy { RecipesPreferences(application.applicationContext) }
-    private val recipesRepository = RecipesRepository.INSTANCE
+    private val recipesRepository =
+        RecipesRepository.getInstance() ?: throw IllegalStateException("Couldn't create repository")
     private val mutex = Mutex()
 
     fun init() {
@@ -38,7 +39,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
             synchronized(mutex) {
                 _uiState.postValue(
                     _uiState.value?.copy(
-                        recipesList = favorites?: emptyList(),
+                        recipesList = favorites ?: emptyList(),
                         hasError = favorites == null
                     )
                 )
