@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import ru.redsoft.androidsprint.RecipesPreferences
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Recipe
@@ -37,16 +38,17 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
-            val recipe = recipesRepository.getRecipeById(recipeId)
-
-            synchronized(mutex) {
-                _uiState.postValue(
-                    _uiState.value?.copy(
-                        recipe = recipe,
-                        isFavorite = getFavorites().contains(recipeId.toString()),
-                    )
-                )
+            val recipe = mutex.withLock {
+                recipesRepository.getRecipeByIdFromCache(recipeId)
+                    ?: recipesRepository.getRecipeById(recipeId)
             }
+
+            _uiState.postValue(
+                _uiState.value?.copy(
+                    recipe = recipe,
+                    isFavorite = getFavorites().contains(recipeId.toString()),
+                )
+            )
         }
     }
 

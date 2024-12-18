@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
@@ -33,16 +34,21 @@ class RecipesListViewModel(application: Application) : AndroidViewModel(applicat
 
     fun init(category: Category) {
         viewModelScope.launch {
-            val recipesList = recipesRepository.getRecipesByCategoryId(category.id)
-            synchronized(mutex) {
-                _uiState.postValue(
-                    _uiState.value?.copy(
-                        category = category,
-                        recipesList = recipesList ?: emptyList(),
-                        hasError = recipesList == null,
-                    )
-                )
+            val recipesList = mutex.withLock {
+                val recipesList = recipesRepository.getRecipesByCategoryId(category.id)
+                recipesList?.forEach {
+                    recipesRepository.insertRecipe(it.copy(categoryId = category.id))
+                }
+                recipesList ?: recipesRepository.getRecipesByCategoryIdFromCache(category.id)
             }
+
+            _uiState.postValue(
+                _uiState.value?.copy(
+                    category = category,
+                    recipesList = recipesList,
+                    hasError = recipesList.isEmpty(),
+                )
+            )
         }
     }
 }

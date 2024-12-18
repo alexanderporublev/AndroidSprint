@@ -2,6 +2,9 @@ package ru.redsoft.androidsprint.data.network
 
 import android.content.Context
 import android.util.Log
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.Dispatchers
@@ -84,9 +87,20 @@ class RecipesRepository private constructor(val context: Context) {
     }
 
     suspend fun addCategoryToCache(category: Category) =  withContext(dispatcherIO) {
-        Log.d(TAG, "ADD")
         db.categoriesDao().insertCategory(category)
 
+    }
+
+    suspend fun getRecipeByIdFromCache(id: Int): Recipe? = withContext(dispatcherIO) {
+        db.recipesDao().getRecipeById(id)
+    }
+
+    suspend fun getRecipesByCategoryIdFromCache(categoryId: Int): List<Recipe> = withContext(dispatcherIO) {
+       db.recipesDao().getRecipesByCategoryId(categoryId)
+    }
+
+    suspend fun insertRecipe(recipe: Recipe) = withContext(dispatcherIO){
+        db.recipesDao().insertRecipe(recipe)
     }
 
     private val db = Room.databaseBuilder(
