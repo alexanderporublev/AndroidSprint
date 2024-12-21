@@ -17,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.data.network.ImageDownloadService
 import ru.redsoft.androidsprint.databinding.FragmentRecipesListBinding
+import ru.redsoft.androidsprint.model.Recipe
 import ru.redsoft.androidsprint.ui.category.CategoriesListFragment
 import ru.redsoft.androidsprint.ui.recipe.recipe.RecipeFragment
 import java.lang.IllegalStateException
@@ -73,8 +74,8 @@ class RecipesListFragment : Fragment() {
         recipesListAdapter.recipesList = state.recipesList
     }
 
-    private fun openRecipeByRecipeId(id: Int) {
-        val action = RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(id)
+    private fun openRecipeByRecipeId(recipe: Recipe) {
+        val action = RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(recipe)
         findNavController().navigate(action)
     }
 

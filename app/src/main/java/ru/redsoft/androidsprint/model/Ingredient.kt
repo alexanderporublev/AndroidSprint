@@ -7,6 +7,9 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Parcelize
 @Serializable
@@ -18,12 +21,8 @@ data class Ingredient(
 
 class IngredientConverter{
     @TypeConverter
-    fun asString(ingredients: List<Ingredient>): String =
-        ingredients.joinToString(";") { "${it.quantity}:${it.unitOfMeasure}:${it.description}" }
+    fun asString(ingredients: List<Ingredient>): String = Json.encodeToString(ingredients)
 
     @TypeConverter
-    fun fromString(str: String): List<Ingredient> = str.split(";").map {
-        val (quantity, unitOfMeasure, description) = it.split(":")
-        Ingredient(quantity, unitOfMeasure, description)
-    }
+    fun fromString(str: String): List<Ingredient> = Json.decodeFromString(str)
 }

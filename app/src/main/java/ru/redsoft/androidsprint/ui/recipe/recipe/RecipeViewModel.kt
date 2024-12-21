@@ -36,17 +36,12 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         RecipesRepository.getInstance() ?: throw IllegalStateException("Couldn't create repository")
     private val mutex = Mutex()
 
-    fun loadRecipe(recipeId: Int) {
+    fun loadRecipe(recipe: Recipe) {
         viewModelScope.launch {
-            val recipe = mutex.withLock {
-                recipesRepository.getRecipeByIdFromCache(recipeId)
-                    ?: recipesRepository.getRecipeById(recipeId)
-            }
-
             _uiState.postValue(
                 _uiState.value?.copy(
                     recipe = recipe,
-                    isFavorite = getFavorites().contains(recipeId.toString()),
+                    isFavorite = getFavorites().contains(recipe.id.toString()),
                 )
             )
         }

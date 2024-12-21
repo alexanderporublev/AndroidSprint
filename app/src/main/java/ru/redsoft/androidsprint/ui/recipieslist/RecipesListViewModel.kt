@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -33,12 +34,16 @@ class RecipesListViewModel(application: Application) : AndroidViewModel(applicat
 
 
     fun init(category: Category) {
-        viewModelScope.launch {
+       viewModelScope.launch {
             val recipesList = mutex.withLock {
                 val recipesList = recipesRepository.getRecipesByCategoryId(category.id)
+                var jobList = emptyList<Job>().toMutableList()
                 recipesList?.forEach {
-                    recipesRepository.insertRecipe(it.copy(categoryId = category.id))
+                    jobList += launch {
+                        recipesRepository.insertRecipe(it.copy(categoryId = category.id))
+                    }
                 }
+                jobList.forEach { it.join() }
                 recipesList ?: recipesRepository.getRecipesByCategoryIdFromCache(category.id)
             }
 

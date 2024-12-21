@@ -13,7 +13,7 @@ import java.io.FileNotFoundException
 
 class RecipesListAdapter(recipesList: List<Recipe>) :
     RecyclerView.Adapter<RecipesListAdapter.ViewHolder>() {
-    var onItemClickCallback: ((Int) -> Unit)? = null
+    var onItemClickCallback: ((Recipe) -> Unit)? = null
 
     var recipesList: List<Recipe> = recipesList
         get() = field
@@ -42,7 +42,7 @@ class RecipesListAdapter(recipesList: List<Recipe>) :
         viewHolder.imageView.contentDescription =
             context.getString(R.string.recipe_image, recipesList[position].title)
         viewHolder.binding.root.setOnClickListener {
-            onItemClickCallback?.invoke(recipesList[position].id)
+            onItemClickCallback?.invoke(recipesList[position])
         }
     }
 
