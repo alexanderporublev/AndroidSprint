@@ -7,8 +7,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
@@ -32,17 +34,26 @@ class RecipesListViewModel(application: Application) : AndroidViewModel(applicat
 
 
     fun init(category: Category) {
-        viewModelScope.launch {
-            val recipesList = recipesRepository.getRecipesByCategoryId(category.id)
-            synchronized(mutex) {
-                _uiState.postValue(
-                    _uiState.value?.copy(
-                        category = category,
-                        recipesList = recipesList ?: emptyList(),
-                        hasError = recipesList == null,
-                    )
-                )
+       viewModelScope.launch {
+            val recipesList = mutex.withLock {
+                val recipesList = recipesRepository.getRecipesByCategoryId(category.id)
+                var jobList = emptyList<Job>().toMutableList()
+                recipesList?.forEach {
+                    jobList += launch {
+                        recipesRepository.insertRecipe(it.copy(categoryId = category.id))
+                    }
+                }
+                jobList.forEach { it.join() }
+                recipesList ?: recipesRepository.getRecipesByCategoryIdFromCache(category.id)
             }
+
+            _uiState.postValue(
+                _uiState.value?.copy(
+                    category = category,
+                    recipesList = recipesList,
+                    hasError = recipesList.isEmpty(),
+                )
+            )
         }
     }
 }

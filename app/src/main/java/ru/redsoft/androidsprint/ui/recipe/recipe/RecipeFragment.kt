@@ -46,7 +46,9 @@ class RecipeFragment : Fragment() {
         initUI()
         observeData()
         try {
-            viewModel.loadRecipe( args.recipeId )
+            viewModel.loadRecipe(
+                args.recipe ?: throw IllegalArgumentException("Recipe has not been provided")
+            )
         } catch (e: IllegalArgumentException) {
             Toast.makeText(
                 activity?.applicationContext,
@@ -67,10 +69,14 @@ class RecipeFragment : Fragment() {
             return@observe
         }
         if (state.recipe == null)
-           return@observe
+            return@observe
         binding.recipeNameTextView.text = state.recipe.title
 
-        ImageDownloadService.INSTANCE.loadImage(state.recipe.imageUrl, context?:throw IllegalStateException("Not any activity"), binding.headerImageView)
+        ImageDownloadService.INSTANCE.loadImage(
+            state.recipe.imageUrl,
+            context ?: throw IllegalStateException("Not any activity"),
+            binding.headerImageView
+        )
 
         ingredientsAdapter.ingredientsList = state.recipe.ingredients
         methodAdapter.methodsList = state.recipe.method

@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.databinding.FragmentFavoritesBinding
+import ru.redsoft.androidsprint.model.Recipe
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListAdapter
 
 class FavoritesFragment : Fragment() {
@@ -58,8 +59,8 @@ class FavoritesFragment : Fragment() {
 
     }
 
-    private fun openRecipeByRecipeId(id: Int) {
-        val action = FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(id)
+    private fun openRecipeByRecipeId(recipe: Recipe) {
+        val action = FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(recipe)
         findNavController().navigate(action)
     }
 }
