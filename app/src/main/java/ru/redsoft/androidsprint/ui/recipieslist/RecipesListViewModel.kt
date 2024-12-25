@@ -23,7 +23,6 @@ data class RecipesListUiState(
 
 class RecipesListViewModel(application: Application) : AndroidViewModel(application) {
     private val _uiState = MutableLiveData(RecipesListUiState())
-    private val context: Context by lazy { application.applicationContext }
 
     val uiState: LiveData<RecipesListUiState>
         get() = _uiState
@@ -44,7 +43,7 @@ class RecipesListViewModel(application: Application) : AndroidViewModel(applicat
                     }
                 }
                 jobList.forEach { it.join() }
-                recipesList ?: recipesRepository.getRecipesByCategoryIdFromCache(category.id)
+                recipesRepository.getRecipesByCategoryIdFromCache(category.id)
             }
 
             _uiState.postValue(

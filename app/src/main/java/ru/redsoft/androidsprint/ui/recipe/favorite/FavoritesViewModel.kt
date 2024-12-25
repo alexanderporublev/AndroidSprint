@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import ru.redsoft.androidsprint.RecipesPreferences
+import kotlinx.coroutines.sync.withLock
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Recipe
 
@@ -21,29 +21,23 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     val uiState: LiveData<FavoritesUiState>
         get() = _uiState
 
-    val preferences: RecipesPreferences by lazy { RecipesPreferences(application.applicationContext) }
     private val recipesRepository =
         RecipesRepository.getInstance() ?: throw IllegalStateException("Couldn't create repository")
     private val mutex = Mutex()
 
     fun init() {
         viewModelScope.launch {
-            val ids = preferences.getFavorites().map { it.toInt() }.toSet()
-            val favorites = if (ids.isNotEmpty()) {
-                recipesRepository.getRecipesByIds(
-                    preferences.getFavorites().map { it.toInt() }.toSet(),
-                )
-            } else {
-                emptyList()
+            val favorites = mutex.withLock {
+                recipesRepository.getFavoritesRecipes()
             }
-            synchronized(mutex) {
-                _uiState.postValue(
-                    _uiState.value?.copy(
-                        recipesList = favorites ?: emptyList(),
-                        hasError = favorites == null
-                    )
+
+            _uiState.postValue(
+                _uiState.value?.copy(
+                    recipesList = favorites,
+                    hasError = false
                 )
-            }
+            )
+
         }
     }
 }

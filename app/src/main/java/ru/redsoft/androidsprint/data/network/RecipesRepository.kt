@@ -99,8 +99,16 @@ class RecipesRepository private constructor(val context: Context) {
        db.recipesDao().getRecipesByCategoryId(categoryId)
     }
 
+    suspend fun getFavoritesRecipes(): List<Recipe> = withContext(dispatcherIO) {
+        db.recipesDao().getFavoriteRecipes()
+    }
+
     suspend fun insertRecipe(recipe: Recipe) = withContext(dispatcherIO){
         db.recipesDao().insertRecipe(recipe)
+    }
+
+    suspend fun updateRecipe(recipe: Recipe) = withContext(dispatcherIO){
+        db.recipesDao().updateRecipe(recipe)
     }
 
     private val db = Room.databaseBuilder(

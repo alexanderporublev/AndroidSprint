@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "78659d6d451e0fd7588768c4ebdad03b",
+    "identityHash": "cd5136235832114a6f274cdf75b27291",
     "entities": [
       {
         "tableName": "Category",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "Recipe",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `ingredients` TEXT NOT NULL, `method` TEXT NOT NULL, `image_url` TEXT NOT NULL, `category_id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`category_id`) REFERENCES `Category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `ingredients` TEXT NOT NULL, `method` TEXT NOT NULL, `image_url` TEXT NOT NULL, `category_id` INTEGER NOT NULL, `is_favorite` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`category_id`) REFERENCES `Category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -79,6 +79,12 @@
           {
             "fieldPath": "categoryId",
             "columnName": "category_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "is_favorite",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -118,7 +124,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '78659d6d451e0fd7588768c4ebdad03b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cd5136235832114a6f274cdf75b27291')"
     ]
   }
 }
