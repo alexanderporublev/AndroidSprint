@@ -13,6 +13,8 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import ru.redsoft.androidsprint.data.local.AppDatabase
+import ru.redsoft.androidsprint.data.local.CategoriesDao
+import ru.redsoft.androidsprint.data.local.RecipesDao
 import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
 import java.net.UnknownHostException
@@ -27,6 +29,14 @@ class RecipesRepository private constructor(val context: Context) {
             .build()
 
     private val service = retrofit.create(RecipeApiService::class.java)
+
+    private val db = Room.databaseBuilder(
+        context,
+        AppDatabase::class.java, "recipe_db"
+    ).build()
+
+    private val categoryDao: CategoriesDao = db.categoriesDao()
+    private val recipesDao: RecipesDao = db.recipesDao()
 
     suspend fun getRecipeById(id: Int): Recipe? = withContext(dispatcherIO) {
             try {
@@ -83,31 +93,33 @@ class RecipesRepository private constructor(val context: Context) {
     }
 
     suspend fun getCategoriesFromCache(): List<Category> = withContext(dispatcherIO) {
-        db.categoriesDao().getAllCategories()
+        categoryDao.getAllCategories()
     }
 
     suspend fun addCategoryToCache(category: Category) =  withContext(dispatcherIO) {
-        db.categoriesDao().insertCategory(category)
+        categoryDao.insertCategory(category)
 
     }
 
     suspend fun getRecipeByIdFromCache(id: Int): Recipe? = withContext(dispatcherIO) {
-        db.recipesDao().getRecipeById(id)
+        recipesDao.getRecipeById(id)
     }
 
     suspend fun getRecipesByCategoryIdFromCache(categoryId: Int): List<Recipe> = withContext(dispatcherIO) {
-       db.recipesDao().getRecipesByCategoryId(categoryId)
+       recipesDao.getRecipesByCategoryId(categoryId)
+    }
+
+    suspend fun getFavoritesRecipes(): List<Recipe> = withContext(dispatcherIO) {
+        recipesDao.getFavoriteRecipes()
     }
 
     suspend fun insertRecipe(recipe: Recipe) = withContext(dispatcherIO){
-        db.recipesDao().insertRecipe(recipe)
+        recipesDao.insertRecipe(recipe)
     }
 
-    private val db = Room.databaseBuilder(
-        context,
-        AppDatabase::class.java, "recipe_db"
-    ).build()
-
+    suspend fun updateRecipe(recipe: Recipe) = withContext(dispatcherIO){
+        recipesDao.updateRecipe(recipe)
+    }
 
     companion object {
         fun getInstance(context: Context? = null): RecipesRepository?{

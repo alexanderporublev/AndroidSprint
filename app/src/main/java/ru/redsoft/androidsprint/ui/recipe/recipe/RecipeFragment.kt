@@ -17,7 +17,6 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
-import ru.redsoft.androidsprint.RecipesPreferences
 import ru.redsoft.androidsprint.data.network.ImageDownloadService
 import ru.redsoft.androidsprint.databinding.FragmentRecipeBinding
 import ru.redsoft.androidsprint.model.Recipe
@@ -85,7 +84,7 @@ class RecipeFragment : Fragment() {
             resources.getString(R.string.portions_count, state.portionsCount)
         ingredientsAdapter.updateIngredients(state.portionsCount)
 
-        switchFavoriteIcon(state.isFavorite)
+        switchFavoriteIcon(state.recipe.isFavorite)
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
