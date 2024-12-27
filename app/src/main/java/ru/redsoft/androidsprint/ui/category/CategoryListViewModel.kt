@@ -15,13 +15,13 @@ data class CategoryListUiState(
     val hasError: Boolean = false,
 )
 
-class CategoryListViewModel : ViewModel() {
+class CategoryListViewModel(
+    private val recipesRepository: RecipesRepository
+) : ViewModel() {
     private val _uiState = MutableLiveData(CategoryListUiState())
     val uiState: LiveData<CategoryListUiState>
         get() = _uiState
 
-    private val recipesRepository =
-        RecipesRepository.getInstance() ?: throw IllegalStateException("Couldn't create repository")
     private val mutex = Mutex()
 
     fun init() {

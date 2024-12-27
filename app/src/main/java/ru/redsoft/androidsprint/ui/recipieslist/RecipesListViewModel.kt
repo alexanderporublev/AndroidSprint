@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -21,19 +22,19 @@ data class RecipesListUiState(
     val hasError: Boolean = false,
 )
 
-class RecipesListViewModel(application: Application) : AndroidViewModel(application) {
+class RecipesListViewModel(
+    private val recipesRepository: RecipesRepository,
+) : ViewModel() {
     private val _uiState = MutableLiveData(RecipesListUiState())
 
     val uiState: LiveData<RecipesListUiState>
         get() = _uiState
 
-    private val recipesRepository =
-        RecipesRepository.getInstance() ?: throw IllegalStateException("Couldn't create repository")
     private val mutex = Mutex()
 
 
     fun init(category: Category) {
-       viewModelScope.launch {
+        viewModelScope.launch {
             val recipesList = mutex.withLock {
                 val recipesList = recipesRepository.getRecipesByCategoryId(category.id)
                 var jobList = emptyList<Job>().toMutableList()

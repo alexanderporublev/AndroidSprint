@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.redsoft.androidsprint.R
+import ru.redsoft.androidsprint.RecipesApplication
 import ru.redsoft.androidsprint.data.network.ImageDownloadService
 import ru.redsoft.androidsprint.databinding.FragmentRecipesListBinding
 import ru.redsoft.androidsprint.model.Recipe
@@ -29,13 +30,19 @@ class RecipesListFragment : Fragment() {
         }
     }
 
-    private val recipesListViewModel: RecipesListViewModel by viewModels()
+    private lateinit var recipesListViewModel: RecipesListViewModel
     private val args: RecipesListFragmentArgs by navArgs()
 
     val binding: FragmentRecipesListBinding by lazy {
         FragmentRecipesListBinding.inflate(
             layoutInflater
         )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val appContainer = (requireActivity().application as RecipesApplication).appContainer
+        recipesListViewModel = appContainer.recipesListViewModelFactory.create()
     }
 
     override fun onCreateView(
