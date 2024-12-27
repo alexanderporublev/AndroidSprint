@@ -14,6 +14,7 @@ import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.RecipesApplication
 import ru.redsoft.androidsprint.data.network.ImageDownloadService
@@ -23,6 +24,7 @@ import ru.redsoft.androidsprint.ui.category.CategoriesListFragment
 import ru.redsoft.androidsprint.ui.recipe.recipe.RecipeFragment
 import java.lang.IllegalStateException
 
+@AndroidEntryPoint
 class RecipesListFragment : Fragment() {
     private val recipesListAdapter = RecipesListAdapter(emptyList()).also { adapter ->
         adapter.onItemClickCallback = {
@@ -30,19 +32,13 @@ class RecipesListFragment : Fragment() {
         }
     }
 
-    private lateinit var recipesListViewModel: RecipesListViewModel
+    private val recipesListViewModel: RecipesListViewModel by viewModels()
     private val args: RecipesListFragmentArgs by navArgs()
 
     val binding: FragmentRecipesListBinding by lazy {
         FragmentRecipesListBinding.inflate(
             layoutInflater
         )
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val appContainer = (requireActivity().application as RecipesApplication).appContainer
-        recipesListViewModel = appContainer.recipesListViewModelFactory.create()
     }
 
     override fun onCreateView(

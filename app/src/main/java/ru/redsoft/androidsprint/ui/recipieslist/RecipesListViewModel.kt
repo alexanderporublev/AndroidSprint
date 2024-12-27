@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -15,6 +16,7 @@ import kotlinx.coroutines.sync.withLock
 import ru.redsoft.androidsprint.data.network.RecipesRepository
 import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
+import javax.inject.Inject
 
 data class RecipesListUiState(
     val category: Category? = null,
@@ -22,7 +24,8 @@ data class RecipesListUiState(
     val hasError: Boolean = false,
 )
 
-class RecipesListViewModel(
+@HiltViewModel
+class RecipesListViewModel @Inject constructor(
     private val recipesRepository: RecipesRepository,
 ) : ViewModel() {
     private val _uiState = MutableLiveData(RecipesListUiState())

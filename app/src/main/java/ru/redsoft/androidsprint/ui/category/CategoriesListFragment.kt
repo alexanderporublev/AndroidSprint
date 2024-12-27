@@ -12,24 +12,21 @@ import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.RecipesApplication
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
 import ru.redsoft.androidsprint.databinding.FragmentCategoriesListBinding
 import ru.redsoft.androidsprint.model.Category
 
+@AndroidEntryPoint
 class CategoriesListFragment : Fragment() {
     val categoryListAdapter = CategoriesListAdapter()
 
-    private lateinit var viewModel: CategoryListViewModel
+    private val viewModel: CategoryListViewModel by viewModels()
+
     private val binding: FragmentCategoriesListBinding by lazy {
         FragmentCategoriesListBinding.inflate(layoutInflater)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val appContainer = (requireActivity().application as RecipesApplication).appContainer
-        viewModel = appContainer.categoriesListViewModelFactory.create()
     }
 
     override fun onCreateView(

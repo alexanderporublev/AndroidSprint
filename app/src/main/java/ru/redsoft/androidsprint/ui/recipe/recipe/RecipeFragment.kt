@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.RecipesApplication
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
@@ -24,6 +25,7 @@ import ru.redsoft.androidsprint.model.Recipe
 import java.io.FileNotFoundException
 import java.lang.IllegalStateException
 
+@AndroidEntryPoint
 class RecipeFragment : Fragment() {
     private val ingredientsAdapter = IngredientsAdapter(emptyList())
     private val methodAdapter = MethodAdapter(emptyList())
@@ -31,13 +33,7 @@ class RecipeFragment : Fragment() {
 
     val binding: FragmentRecipeBinding by lazy { FragmentRecipeBinding.inflate(layoutInflater) }
 
-    private lateinit var viewModel: RecipeViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val appContainer = (requireActivity().application as RecipesApplication).appContainer
-        viewModel = appContainer.recipeViewModelFactory.create()
-    }
+    private val viewModel: RecipeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

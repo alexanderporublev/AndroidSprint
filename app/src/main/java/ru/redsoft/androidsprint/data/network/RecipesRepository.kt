@@ -19,14 +19,16 @@ import ru.redsoft.androidsprint.data.local.RecipesDao
 import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
 import java.net.UnknownHostException
+import javax.inject.Inject
 import kotlin.IllegalStateException
 
-class RecipesRepository(
+class RecipesRepository @Inject constructor(
     private val service: RecipeApiService,
-    private val dispatcherIO: CoroutineDispatcher,
     private val categoriesDao: CategoriesDao,
     private val recipesDao: RecipesDao,
 ) {
+    private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
+
     suspend fun getRecipeById(id: Int): Recipe? = withContext(dispatcherIO) {
         try {
             val response = service.getRecipeById(id).execute()
