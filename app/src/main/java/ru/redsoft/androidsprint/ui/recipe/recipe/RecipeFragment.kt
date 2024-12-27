@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import ru.redsoft.androidsprint.R
+import ru.redsoft.androidsprint.RecipesApplication
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListFragment
 import ru.redsoft.androidsprint.data.network.ImageDownloadService
 import ru.redsoft.androidsprint.databinding.FragmentRecipeBinding
@@ -30,7 +31,13 @@ class RecipeFragment : Fragment() {
 
     val binding: FragmentRecipeBinding by lazy { FragmentRecipeBinding.inflate(layoutInflater) }
 
-    private val viewModel: RecipeViewModel by viewModels()
+    private lateinit var viewModel: RecipeViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val appContainer = (requireActivity().application as RecipesApplication).appContainer
+        viewModel = appContainer.recipeViewModelFactory.create()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

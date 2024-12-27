@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -16,13 +17,13 @@ data class FavoritesUiState(
     val hasError: Boolean = false
 )
 
-class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
+class FavoritesViewModel(
+    private val recipesRepository: RecipesRepository,
+) : ViewModel() {
     private val _uiState = MutableLiveData(FavoritesUiState())
     val uiState: LiveData<FavoritesUiState>
         get() = _uiState
 
-    private val recipesRepository =
-        RecipesRepository.getInstance() ?: throw IllegalStateException("Couldn't create repository")
     private val mutex = Mutex()
 
     fun init() {
