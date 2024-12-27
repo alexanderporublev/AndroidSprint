@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+import ru.redsoft.androidsprint.IODispatcher
 import ru.redsoft.androidsprint.data.local.AppDatabase
 import ru.redsoft.androidsprint.data.local.CategoriesDao
 import ru.redsoft.androidsprint.data.local.RecipesDao
@@ -26,9 +27,8 @@ class RecipesRepository @Inject constructor(
     private val service: RecipeApiService,
     private val categoriesDao: CategoriesDao,
     private val recipesDao: RecipesDao,
+    @IODispatcher private val dispatcherIO: CoroutineDispatcher,
 ) {
-    private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
-
     suspend fun getRecipeById(id: Int): Recipe? = withContext(dispatcherIO) {
         try {
             val response = service.getRecipeById(id).execute()
