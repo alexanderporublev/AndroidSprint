@@ -13,19 +13,21 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+import ru.redsoft.androidsprint.IODispatcher
 import ru.redsoft.androidsprint.data.local.AppDatabase
 import ru.redsoft.androidsprint.data.local.CategoriesDao
 import ru.redsoft.androidsprint.data.local.RecipesDao
 import ru.redsoft.androidsprint.model.Category
 import ru.redsoft.androidsprint.model.Recipe
 import java.net.UnknownHostException
+import javax.inject.Inject
 import kotlin.IllegalStateException
 
-class RecipesRepository(
+class RecipesRepository @Inject constructor(
     private val service: RecipeApiService,
-    private val dispatcherIO: CoroutineDispatcher,
     private val categoriesDao: CategoriesDao,
     private val recipesDao: RecipesDao,
+    @IODispatcher private val dispatcherIO: CoroutineDispatcher,
 ) {
     suspend fun getRecipeById(id: Int): Recipe? = withContext(dispatcherIO) {
         try {

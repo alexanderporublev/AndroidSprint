@@ -8,28 +8,24 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ru.redsoft.androidsprint.R
 import ru.redsoft.androidsprint.RecipesApplication
 import ru.redsoft.androidsprint.databinding.FragmentFavoritesBinding
 import ru.redsoft.androidsprint.model.Recipe
 import ru.redsoft.androidsprint.ui.recipieslist.RecipesListAdapter
 
+@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
     private val recipesListAdapter = RecipesListAdapter(emptyList()).also { adapter ->
         adapter.onItemClickCallback = {
             openRecipeByRecipeId(it)
         }
     }
-    private lateinit var favoritesViewModel: FavoritesViewModel
+    private val favoritesViewModel: FavoritesViewModel by viewModels()
 
     private val binding: FragmentFavoritesBinding by lazy {
         FragmentFavoritesBinding.inflate(layoutInflater)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val appContainer = (requireActivity().application as RecipesApplication).appContainer
-        favoritesViewModel = appContainer.favoritesViewModelFactory.create()
     }
 
     override fun onCreateView(
